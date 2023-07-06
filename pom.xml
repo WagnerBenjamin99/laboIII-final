@@ -34,6 +34,11 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>se.sawano.java</groupId>
+      <artifactId>alphanumeric-comparator</artifactId>
+      <version>1.4</version>
+    </dependency>
   </dependencies>
 
   <build>

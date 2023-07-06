@@ -45,10 +45,10 @@ public class Materia {
     private int cuatrimestre;
     private Profesor profesor;
 
+    private String codigo;
     private List<Materia> correlatividades;
 
     public Materia(){}
-
 
     public Materia(String nombre, int anio, int cuatrimestre, Profesor profesor) {
         this.anio = anio;
@@ -66,6 +66,14 @@ public class Materia {
 
     public List<Materia> getCorrelatividades(){
         return this.correlatividades;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public String getNombre() {

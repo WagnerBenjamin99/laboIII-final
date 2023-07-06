@@ -11,8 +11,11 @@ import ar.edu.utn.frbb.tup.model.exception.CorrelatividadesNoAprobadasException;
 import ar.edu.utn.frbb.tup.model.exception.EstadoIncorrectoException;
 import ar.edu.utn.frbb.tup.persistence.AlumnoDao;
 import ar.edu.utn.frbb.tup.persistence.AlumnoDaoMemoryImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Map;
 import java.util.Random;
 
 @Component
@@ -53,5 +56,23 @@ public class AlumnoServiceImpl implements AlumnoService {
     @Override
     public Alumno buscarAlumno(String apellido) {
         return alumnoDao.findAlumno(apellido);
+    }
+
+    public Alumno buscarPorId(int id){
+        return alumnoDao.buscarPorId(id);
+    }
+
+    @Override
+    public Alumno borrarAlumno(int id){
+        Alumno alumno = alumnoDao.buscarPorId(id);
+
+        if (alumno == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontro el alumno que desea eliminar");
+        return alumnoDao.borrarAlumno(alumno);
+    }
+
+    @Override
+    public Alumno editarAlumno(int id, Map<String, Object> nuevosDatos) {
+        return alumnoDao.editarAlumno(id, nuevosDatos);
     }
 }

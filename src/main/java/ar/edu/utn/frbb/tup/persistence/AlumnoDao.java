@@ -1,7 +1,8 @@
 package ar.edu.utn.frbb.tup.persistence;
 
 import ar.edu.utn.frbb.tup.model.Alumno;
-import ar.edu.utn.frbb.tup.persistence.exception.DaoException;
+
+import java.util.Map;
 
 public interface AlumnoDao {
 
@@ -10,4 +11,10 @@ public interface AlumnoDao {
     Alumno findAlumno(String apellidoAlumno);
 
     Alumno loadAlumno(Long dni);
+
+    Alumno buscarPorId(int id);
+
+    Alumno borrarAlumno(Alumno alumno);
+
+    Alumno editarAlumno(int id, Map<String, Object> nuevosDatos);
 }
