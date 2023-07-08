@@ -10,6 +10,15 @@ public class MateriaDto {
     private int anio;
     private int cuatrimestre;
     private long profesorId;
+    private Integer carreraId = null;
+
+    public Integer getCarreraId() {
+        return carreraId;
+    }
+
+    public void setCarreraId(int carreraId) {
+        this.carreraId = carreraId;
+    }
 
     public long getProfesorId() {
         return profesorId;

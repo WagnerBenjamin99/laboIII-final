@@ -1,15 +1,19 @@
 package ar.edu.utn.frbb.tup.business.impl;
 
+import ar.edu.utn.frbb.tup.business.CarreraService;
 import ar.edu.utn.frbb.tup.business.MateriaService;
 import ar.edu.utn.frbb.tup.business.ProfesorService;
+import ar.edu.utn.frbb.tup.model.Carrera;
 import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.model.dto.MateriaDto;
 import ar.edu.utn.frbb.tup.persistence.MateriaDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +25,12 @@ public class MateriaServiceImpl implements MateriaService {
     @Autowired
     private ProfesorService profesorService;
 
+    private CarreraService carreraService;
+
+    public MateriaServiceImpl(@Lazy CarreraService carreraService) {
+        this.carreraService = carreraService;
+    }
+
     @Override
     public Materia crearMateria(MateriaDto materia) throws IllegalArgumentException{
         Materia m = new Materia();
@@ -28,6 +38,8 @@ public class MateriaServiceImpl implements MateriaService {
         m.setAnio(materia.getAnio());
         m.setCuatrimestre(materia.getCuatrimestre());
         m.setProfesor(profesorService.buscarProfesor(materia.getProfesorId()));
+
+
         return dao.save(m);
     }
 
@@ -57,4 +69,16 @@ public class MateriaServiceImpl implements MateriaService {
     public List<Materia> ordenarMaterias(String ordenamiento) {
         return dao.ordenarMaterias(ordenamiento);
     }
+
+    @Override
+    public Materia filtrarPorNombre(String nombre) {
+        return dao.filtrarPorNombre(nombre);
+    }
+
+    @Override
+    public Materia asignarCarrera(Carrera c, Materia m) {
+        return null;
+    }
+
+
 }

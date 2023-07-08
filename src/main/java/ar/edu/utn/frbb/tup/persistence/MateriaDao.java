@@ -1,5 +1,6 @@
 package ar.edu.utn.frbb.tup.persistence;
 
+import ar.edu.utn.frbb.tup.model.Carrera;
 import ar.edu.utn.frbb.tup.model.Materia;
 
 import java.util.List;
@@ -19,4 +20,8 @@ public interface MateriaDao {
     String generarCodigo();
 
     List<Materia> ordenarMaterias(String ordenamiento);
+
+    Materia filtrarPorNombre(String nombre);
+
+    Materia asignarCarrera(Carrera c, Materia m);
 }

@@ -1,5 +1,6 @@
 package ar.edu.utn.frbb.tup.business;
 
+import ar.edu.utn.frbb.tup.model.Carrera;
 import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.model.dto.MateriaDto;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
@@ -12,11 +13,15 @@ public interface MateriaService {
 
     List<Materia> getAllMaterias();
 
-    Materia getMateriaById(int idMateria) throws MateriaNotFoundException;
+    Materia getMateriaById(int idMateria);
 
     Materia borrarMateria(Integer idMateria) throws MateriaNotFoundException;
 
     Materia modificarMateria(Map<String, Object> nuevosDatos, int idMateria);
 
     List<Materia> ordenarMaterias(String ordenamiento);
+
+    Materia filtrarPorNombre(String nombre);
+
+    Materia asignarCarrera(Carrera c, Materia m);
 }

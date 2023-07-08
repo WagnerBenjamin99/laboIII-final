@@ -1,13 +1,13 @@
-package ar.edu.utn.frbb.tup.persistence;
+package ar.edu.utn.frbb.tup.persistence.impl;
 
+
+import ar.edu.utn.frbb.tup.model.Carrera;
 import ar.edu.utn.frbb.tup.model.Materia;
-import ar.edu.utn.frbb.tup.model.dto.MateriaDto;
-import ar.edu.utn.frbb.tup.persistence.comparators.CodeComparator;
+import ar.edu.utn.frbb.tup.persistence.MateriaDao;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.swing.text.StyledEditorKit;
 import java.util.*;
 
 @Service
@@ -111,5 +111,28 @@ public class MateriaDaoMemoryImpl implements MateriaDao {
                 break;
         }
         return materias;
+    }
+
+    @Override
+    public Materia filtrarPorNombre(String nombre) {
+
+        for (Materia m: repositorioMateria.values()) {
+            if (m.getNombre().equals(nombre)){
+                return m;
+            }
+        }
+        throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "No existen materias con ese nombre."
+        );
+    }
+
+    @Override
+    public Materia asignarCarrera(Carrera c, Materia m) {
+        for (Materia materia : repositorioMateria.values()){
+            if (m.equals(materia))materia.setCarrera(c);
+        }
+        throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "Materia inexistente"
+        );
     }
 }

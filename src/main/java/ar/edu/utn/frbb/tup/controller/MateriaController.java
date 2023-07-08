@@ -46,4 +46,9 @@ public class MateriaController {
     public List<Materia> getMateriasOrdenadas(@RequestParam String ordenamiento){
         return materiaService.ordenarMaterias(ordenamiento);
     }
+
+    @GetMapping("/filtro")
+    public Materia filtrarPorNombre(@RequestParam String nombre){
+        return materiaService.filtrarPorNombre(nombre);
+    }
 }

@@ -10,7 +10,7 @@ import ar.edu.utn.frbb.tup.model.dto.AlumnoDto;
 import ar.edu.utn.frbb.tup.model.exception.CorrelatividadesNoAprobadasException;
 import ar.edu.utn.frbb.tup.model.exception.EstadoIncorrectoException;
 import ar.edu.utn.frbb.tup.persistence.AlumnoDao;
-import ar.edu.utn.frbb.tup.persistence.AlumnoDaoMemoryImpl;
+import ar.edu.utn.frbb.tup.persistence.impl.AlumnoDaoMemoryImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;

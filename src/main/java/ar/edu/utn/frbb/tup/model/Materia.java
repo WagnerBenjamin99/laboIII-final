@@ -8,6 +8,29 @@ public class Materia {
 
     private int materiaId;
     private String nombre;
+    private int anio;
+    private int cuatrimestre;
+    private Profesor profesor;
+    private String codigo;
+    private List<Materia> correlatividades;
+    private Carrera carrera;
+    private int id;
+
+    public Carrera getCarrera() {
+        return carrera;
+    }
+
+    public void setCarrera(Carrera carrera) {
+        this.carrera = carrera;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -40,13 +63,6 @@ public class Materia {
     public void setCorrelatividades(List<Materia> correlatividades) {
         this.correlatividades = correlatividades;
     }
-
-    private int anio;
-    private int cuatrimestre;
-    private Profesor profesor;
-
-    private String codigo;
-    private List<Materia> correlatividades;
 
     public Materia(){}
 
