@@ -1,25 +1,31 @@
 package ar.edu.utn.frbb.tup.model;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import java.util.*;
+
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Carrera {
-
-    private final String nombre;
+    private int id;
+    private String nombre;
     private String codigo;
     private int cantidadCuatrimestres;
     private int idDepartamento;
-    private Set<Materia> materiasList;
-    private int id;
 
-    public Carrera(String nombre, int cantidadAnios, int idDepartamento, Set<Materia> materias) {
-        this.nombre = nombre;
-        this.cantidadCuatrimestres = cantidadAnios;
-        this.idDepartamento = idDepartamento;
-        this.materiasList = materias;
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    private List<Materia> materiasList;
+
+
+    public Carrera() {
+        this.materiasList = new ArrayList<>();
     }
+
 
     public int getId() {
         return id;
@@ -32,6 +38,7 @@ public class Carrera {
     public String getNombre() {
         return nombre;
     }
+
 
     public String getCodigo() {
         return codigo;
@@ -57,39 +64,36 @@ public class Carrera {
         this.idDepartamento = idDepartamento;
     }
 
-    public Set<Materia> getMateriasList() {
+    public List<Materia> getMateriasList() {
         return materiasList;
     }
 
-    public void setMateriasList(Set<Materia> materiasList) {
+    public void setMateriasList(List<Materia> materiasList) {
         this.materiasList = materiasList;
     }
 
     public void agregarMateria(Materia m){
 
-        this.materiasList.add(m);
+        materiasList.add(m);
+        m.setCarrera(this);
 
     }
 
-
-    public interface CarreraStrategy{
-        Carrera crearCarrera(String nombre, int departamentoId, int cantidadCuatrimestres, Set<Materia> materias);
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public static class CarreraConMaterias implements CarreraStrategy{
-
-        @Override
-        public Carrera crearCarrera(String nombre, int departamentoId, int cantidadCuatrimestres, Set<Materia> materias) {
-            return new Carrera(nombre, departamentoId, cantidadCuatrimestres, materias);
-        }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Carrera carrera = (Carrera) o;
+        return id == carrera.id && cantidadCuatrimestres == carrera.cantidadCuatrimestres && idDepartamento == carrera.idDepartamento && Objects.equals(nombre, carrera.nombre) && Objects.equals(codigo, carrera.codigo) && Objects.equals(materiasList, carrera.materiasList);
     }
 
-    public static class CarreraSinMaterias implements CarreraStrategy{
-
-        @Override
-        public Carrera crearCarrera(String nombre, int departamentoId, int cantidadCuatrimestres, Set<Materia> materias) {
-            return new Carrera(nombre, departamentoId, cantidadCuatrimestres, new HashSet<>());
-        }
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nombre, codigo, cantidadCuatrimestres, idDepartamento, materiasList);
     }
 }
 

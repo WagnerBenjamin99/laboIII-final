@@ -1,9 +1,11 @@
 package ar.edu.utn.frbb.tup.persistence.impl;
 
 
+import ar.edu.utn.frbb.tup.business.MateriaService;
 import ar.edu.utn.frbb.tup.model.Carrera;
 import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.persistence.MateriaDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,12 +18,14 @@ public class MateriaDaoMemoryImpl implements MateriaDao {
     private static final Map<Integer, Materia> repositorioMateria = new HashMap<>();
     private static final Set<String> codigosUsados = new HashSet<>();
 
+
+
     @Override
     public Materia save(Materia materia) {
         Random random = new Random();
         materia.setMateriaId(random.nextInt(20));
         materia.setCodigo(generarCodigo());
-        repositorioMateria.put(materia.getMateriaId(), materia);
+        repositorioMateria.put(materia.getId(), materia);
         return materia;
     }
 
@@ -29,7 +33,7 @@ public class MateriaDaoMemoryImpl implements MateriaDao {
     public Materia findById(int idMateria){
         for (Materia m:
              repositorioMateria.values()) {
-            if (idMateria == m.getMateriaId()) {
+            if (idMateria == m.getId()) {
                 return m;
             }
         }
@@ -38,7 +42,7 @@ public class MateriaDaoMemoryImpl implements MateriaDao {
 
     @Override
     public Materia borrarMateria(Materia materia) {
-        if (repositorioMateria.remove(materia.getMateriaId(), materia))return materia;
+        if (repositorioMateria.remove(materia.getId(), materia))return materia;
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "No se pudo eliminar la materia");
     }
 

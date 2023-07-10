@@ -27,19 +27,19 @@ public class MateriaController {
         return materiaService.crearMateria(materiaDto);
     }
 
-    @GetMapping("/{idMateria}")
-    public Materia getMateriaById(@PathVariable Integer idMateria) throws MateriaNotFoundException {
-        return materiaService.getMateriaById(idMateria);
+    @GetMapping("/{id}")
+    public Materia getMateriaById(@PathVariable Integer id) throws MateriaNotFoundException {
+        return materiaService.getMateriaById(id);
     }
 
-    @DeleteMapping("/{idMateria}")
-    public Materia borrarMateria(@PathVariable Integer idMateria) throws MateriaNotFoundException {
-        return materiaService.borrarMateria(idMateria);
+    @DeleteMapping("/{id}")
+    public Materia borrarMateria(@PathVariable Integer id) throws MateriaNotFoundException {
+        return materiaService.borrarMateria(id);
     }
 
-    @PatchMapping("/{idMateria}")
-    public Materia modificarMateria(@PathVariable int idMateria, @RequestBody Map<String, Object> nuevosDatos){
-        return materiaService.modificarMateria(nuevosDatos, idMateria);
+    @PatchMapping("/{id}")
+    public Materia modificarMateria(@PathVariable int id, @RequestBody Map<String, Object> nuevosDatos){
+        return materiaService.modificarMateria(nuevosDatos, id);
     }
 
     @GetMapping("/")

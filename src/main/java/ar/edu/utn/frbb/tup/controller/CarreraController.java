@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("carrera")
@@ -32,8 +33,18 @@ public class CarreraController {
         return carreraService.getCarreraById(idCarrera);
     }
 
-    @PatchMapping("/{idCarrera}/materias/{idMateria}")
+    @PutMapping("/{idCarrera}/materias/{idMateria}")
     public Carrera agregarMateria(@PathVariable int idCarrera, @PathVariable int idMateria){
         return carreraService.agregarMateria(idCarrera, idMateria);
+    }
+
+    @PatchMapping("/{idCarrera}")
+    public Carrera modificarCarrera(@PathVariable int idCarrera, @RequestBody Map<String, Object> nuevosDatos){
+        return carreraService.modificarCarrera(nuevosDatos, idCarrera);
+    }
+
+    @DeleteMapping("/{idCarrera}")
+    public Carrera eliminarCarrera(){
+        return null;
     }
 }

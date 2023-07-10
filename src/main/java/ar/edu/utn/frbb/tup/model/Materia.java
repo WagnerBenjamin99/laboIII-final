@@ -1,20 +1,26 @@
 package ar.edu.utn.frbb.tup.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Materia {
-
-    private int materiaId;
+    private int id;
     private String nombre;
     private int anio;
     private int cuatrimestre;
     private Profesor profesor;
     private String codigo;
     private List<Materia> correlatividades;
+
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = false)
     private Carrera carrera;
-    private int id;
 
     public Carrera getCarrera() {
         return carrera;
@@ -97,11 +103,11 @@ public class Materia {
     }
 
     public int getMateriaId() {
-        return materiaId;
+        return id;
     }
 
     public void setMateriaId(int materiaId) {
-        this.materiaId = materiaId;
+        this.id = materiaId;
     }
 
     @Override
@@ -109,11 +115,25 @@ public class Materia {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Materia materia = (Materia) o;
-        return materiaId == materia.materiaId && anio == materia.anio && cuatrimestre == materia.cuatrimestre && Objects.equals(nombre, materia.nombre) && Objects.equals(profesor, materia.profesor) && Objects.equals(correlatividades, materia.correlatividades);
+        return id == materia.id && anio == materia.anio && cuatrimestre == materia.cuatrimestre && Objects.equals(nombre, materia.nombre) && Objects.equals(profesor, materia.profesor) && Objects.equals(codigo, materia.codigo) && Objects.equals(correlatividades, materia.correlatividades) && Objects.equals(carrera, materia.carrera);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(materiaId, nombre, anio, cuatrimestre, profesor, correlatividades);
+        return Objects.hash(id, nombre, anio, cuatrimestre, profesor, codigo, correlatividades, carrera);
+    }
+
+    @Override
+    public String toString() {
+        return "Materia{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", anio=" + anio +
+                ", cuatrimestre=" + cuatrimestre +
+                ", profesor=" + profesor +
+                ", codigo='" + codigo + '\'' +
+                ", correlatividades=" + correlatividades +
+                ", carrera=" + carrera +
+                '}';
     }
 }
