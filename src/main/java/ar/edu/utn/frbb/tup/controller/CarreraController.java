@@ -4,6 +4,7 @@ import ar.edu.utn.frbb.tup.business.CarreraService;
 import ar.edu.utn.frbb.tup.model.Carrera;
 import ar.edu.utn.frbb.tup.model.dto.CarreraDto;
 import ar.edu.utn.frbb.tup.model.dto.MateriaDto;
+import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +45,7 @@ public class CarreraController {
     }
 
     @DeleteMapping("/{idCarrera}")
-    public Carrera eliminarCarrera(){
-        return null;
+    public Carrera eliminarCarrera(@PathVariable int  idCarrera) throws MateriaNotFoundException {
+        return carreraService.eliminarCarrera(idCarrera);
     }
 }

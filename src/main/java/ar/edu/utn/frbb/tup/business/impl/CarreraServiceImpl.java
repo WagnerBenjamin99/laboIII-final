@@ -5,6 +5,7 @@ import ar.edu.utn.frbb.tup.business.MateriaService;
 import ar.edu.utn.frbb.tup.model.*;
 import ar.edu.utn.frbb.tup.model.dto.CarreraDto;
 import ar.edu.utn.frbb.tup.persistence.CarreraDao;
+import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -64,5 +65,12 @@ public class CarreraServiceImpl implements CarreraService {
     public Carrera modificarCarrera(Map<String, Object> nuevosDatos, int idCarrera) {
         if (nuevosDatos != null) return carreraDao.modificarCarrera(nuevosDatos, idCarrera);
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Debe incluir datos a modificar");
+    }
+
+    @Override
+    public Carrera eliminarCarrera(int idCarrera) throws MateriaNotFoundException {
+        Carrera c = carreraDao.getCarreraById(idCarrera);
+        for (Materia m : c.getMateriasList())materiaService.borrarMateria(m.getId());
+        return carreraDao.eliminarCarrera(c);
     }
 }

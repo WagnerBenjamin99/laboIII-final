@@ -4,7 +4,6 @@ import ar.edu.utn.frbb.tup.business.MateriaService;
 import ar.edu.utn.frbb.tup.model.Carrera;
 import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.persistence.CarreraDao;
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
@@ -94,6 +93,11 @@ public class CarreraDaoMemoryImpl implements CarreraDao {
         });
 
         return c;
+    }
+
+    @Override
+    public Carrera eliminarCarrera(Carrera carrera) {
+        return repositorioCarrea.remove(carrera.getId());
     }
 
     @Override

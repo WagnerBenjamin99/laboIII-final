@@ -2,7 +2,6 @@ package ar.edu.utn.frbb.tup.persistence;
 
 import ar.edu.utn.frbb.tup.model.Carrera;
 import ar.edu.utn.frbb.tup.model.Materia;
-import org.json.JSONException;
 
 import java.util.List;
 import java.util.Map;
@@ -20,4 +19,6 @@ public interface CarreraDao {
     Carrera crearCarreraConMaterias(List<Materia> materias, Carrera carrera);
 
     Carrera modificarCarrera(Map<String, Object> nuevosDatos, int idCarrera);
+
+    Carrera eliminarCarrera(Carrera carrera);
 }
