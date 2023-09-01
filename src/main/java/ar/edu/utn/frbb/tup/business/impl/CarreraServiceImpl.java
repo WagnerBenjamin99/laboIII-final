@@ -24,7 +24,7 @@ public class CarreraServiceImpl implements CarreraService {
 
 
     @Override
-    public Carrera crearCarrera(CarreraDto carreraDto) {
+    public Carrera crearCarrera(CarreraDto carreraDto) throws MateriaNotFoundException {
         Carrera carrera = new Carrera();
         List<Materia> materias = new ArrayList<>();
 
@@ -55,7 +55,7 @@ public class CarreraServiceImpl implements CarreraService {
     }
 
     @Override
-    public Carrera agregarMateria(int idCarrera, int idMateria) {
+    public Carrera agregarMateria(int idCarrera, int idMateria) throws MateriaNotFoundException {
         Carrera carrera = carreraDao.getCarreraById(idCarrera);
         Materia materia = materiaService.getMateriaById(idMateria);
         return carreraDao.agregarMateria(materia, carrera);

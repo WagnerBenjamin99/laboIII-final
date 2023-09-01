@@ -1,6 +1,7 @@
 package ar.edu.utn.frbb.tup.model;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class Profesor {
@@ -36,5 +37,29 @@ public class Profesor {
 
     public void setMateriasDictadas(List<Materia> materiasDictadas) {
         this.materiasDictadas = materiasDictadas;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Profesor profesor = (Profesor) o;
+        return id == profesor.id && Objects.equals(nombre, profesor.nombre) && Objects.equals(apellido, profesor.apellido) && Objects.equals(titulo, profesor.titulo) && Objects.equals(materiasDictadas, profesor.materiasDictadas);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nombre, apellido, titulo, materiasDictadas);
+    }
+
+    @Override
+    public String toString() {
+        return "Profesor{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", titulo='" + titulo + '\'' +
+                ", materiasDictadas=" + materiasDictadas +
+                '}';
     }
 }

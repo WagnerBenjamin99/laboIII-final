@@ -7,6 +7,8 @@ import ar.edu.utn.frbb.tup.model.Carrera;
 import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.model.dto.MateriaDto;
 import ar.edu.utn.frbb.tup.persistence.MateriaDao;
+import ar.edu.utn.frbb.tup.persistence.exception.MateriaBadRequestException;
+import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -44,34 +46,34 @@ public class MateriaServiceImpl implements MateriaService {
     }
 
     @Override
-    public List<Materia> getAllMaterias() {
+    public List<Materia> getAllMaterias() throws MateriaNotFoundException {
         return dao.getAllMaterias();
     }
 
     @Override
-    public Materia getMateriaById(int idMateria){
+    public Materia getMateriaById(int idMateria) throws MateriaNotFoundException {
         return dao.findById(idMateria);
     }
 
     @Override
-    public Materia borrarMateria(Integer idMateria){
+    public Materia borrarMateria(Integer idMateria) throws MateriaNotFoundException {
         Materia materia = dao.findById(idMateria);
         return dao.borrarMateria(materia);
     }
 
     @Override
-    public Materia modificarMateria(Map<String, Object> nuevosDatos, int idMateria) {
+    public Materia modificarMateria(Map<String, Object> nuevosDatos, int idMateria) throws MateriaNotFoundException, MateriaBadRequestException {
         if (nuevosDatos != null) return dao.modificarMateria(nuevosDatos, idMateria);
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Debe incluir datos a modificar");
     }
 
     @Override
-    public List<Materia> ordenarMaterias(String ordenamiento) {
+    public List<Materia> ordenarMaterias(String ordenamiento) throws MateriaBadRequestException {
         return dao.ordenarMaterias(ordenamiento);
     }
 
     @Override
-    public Materia filtrarPorNombre(String nombre) {
+    public Materia filtrarPorNombre(String nombre) throws MateriaBadRequestException {
         return dao.filtrarPorNombre(nombre);
     }
 

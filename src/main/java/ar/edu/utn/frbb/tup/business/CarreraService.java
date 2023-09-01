@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Map;
 
 public interface CarreraService {
-    Carrera crearCarrera(CarreraDto carreraDto);
+    Carrera crearCarrera(CarreraDto carreraDto) throws MateriaNotFoundException;
 
     List<Carrera> getAllCarreras();
 
     Carrera getCarreraById(int idCarrera);
 
-    Carrera agregarMateria(int idCarrera, int idMateria);
+    Carrera agregarMateria(int idCarrera, int idMateria) throws MateriaNotFoundException;
 
     Carrera modificarCarrera(Map<String, Object> nuevosDatos, int idCarrera);
 

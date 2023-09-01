@@ -20,7 +20,7 @@ public class CarreraController {
 
 
     @PostMapping("/")
-    public Carrera crearCarrera(@RequestBody CarreraDto carreraDto){
+    public Carrera crearCarrera(@RequestBody CarreraDto carreraDto) throws MateriaNotFoundException {
         return carreraService.crearCarrera(carreraDto);
     }
 
@@ -35,7 +35,7 @@ public class CarreraController {
     }
 
     @PutMapping("/{idCarrera}/materias/{idMateria}")
-    public Carrera agregarMateria(@PathVariable int idCarrera, @PathVariable int idMateria){
+    public Carrera agregarMateria(@PathVariable int idCarrera, @PathVariable int idMateria) throws MateriaNotFoundException {
         return carreraService.agregarMateria(idCarrera, idMateria);
     }
 

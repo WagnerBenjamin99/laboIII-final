@@ -2,6 +2,7 @@ package ar.edu.utn.frbb.tup.model;
 
 import ar.edu.utn.frbb.tup.model.exception.EstadoIncorrectoException;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class Asignatura {
@@ -55,4 +56,29 @@ public class Asignatura {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Asignatura{" +
+                "materia=" + materia +
+                ", estado=" + estado +
+                ", nota=" + nota +
+                '}';
+    }
+
+    public void setMateria(Materia materia) {
+        this.materia = materia;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Asignatura that = (Asignatura) o;
+        return Objects.equals(materia, that.materia) && estado == that.estado && Objects.equals(nota, that.nota);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(materia, estado, nota);
+    }
 }

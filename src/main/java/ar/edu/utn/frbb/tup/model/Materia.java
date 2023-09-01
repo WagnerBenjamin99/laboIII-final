@@ -115,12 +115,12 @@ public class Materia {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Materia materia = (Materia) o;
-        return id == materia.id && anio == materia.anio && cuatrimestre == materia.cuatrimestre && Objects.equals(nombre, materia.nombre) && Objects.equals(profesor, materia.profesor) && Objects.equals(codigo, materia.codigo) && Objects.equals(correlatividades, materia.correlatividades) && Objects.equals(carrera, materia.carrera);
+        return anio == materia.anio && cuatrimestre == materia.cuatrimestre && Objects.equals(nombre, materia.nombre) && Objects.equals(profesor, materia.profesor) && Objects.equals(codigo, materia.codigo) && Objects.equals(correlatividades, materia.correlatividades) && Objects.equals(carrera, materia.carrera);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre, anio, cuatrimestre, profesor, codigo, correlatividades, carrera);
+        return Objects.hash(nombre, anio, cuatrimestre, profesor, codigo, correlatividades, carrera);
     }
 
     @Override

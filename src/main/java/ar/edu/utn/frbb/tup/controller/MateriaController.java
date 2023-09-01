@@ -3,6 +3,7 @@ package ar.edu.utn.frbb.tup.controller;
 import ar.edu.utn.frbb.tup.business.MateriaService;
 import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.model.dto.MateriaDto;
+import ar.edu.utn.frbb.tup.persistence.exception.MateriaBadRequestException;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class MateriaController {
     private MateriaService materiaService;
 
     @GetMapping
-    public List<Materia> getMaterias() {
+    public List<Materia> getMaterias() throws MateriaNotFoundException {
         return materiaService.getAllMaterias();
     }
 
@@ -38,17 +39,18 @@ public class MateriaController {
     }
 
     @PatchMapping("/{id}")
-    public Materia modificarMateria(@PathVariable int id, @RequestBody Map<String, Object> nuevosDatos){
+    public Materia modificarMateria(@PathVariable int id, @RequestBody Map<String, Object> nuevosDatos) throws MateriaNotFoundException, MateriaBadRequestException {
+        if(nuevosDatos.size() == 0 || nuevosDatos == null) throw new MateriaBadRequestException("Campos vacios");
         return materiaService.modificarMateria(nuevosDatos, id);
     }
 
     @GetMapping("/")
-    public List<Materia> getMateriasOrdenadas(@RequestParam String ordenamiento){
+    public List<Materia> getMateriasOrdenadas(@RequestParam String ordenamiento) throws MateriaBadRequestException {
         return materiaService.ordenarMaterias(ordenamiento);
     }
 
     @GetMapping("/filtro")
-    public Materia filtrarPorNombre(@RequestParam String nombre){
+    public Materia filtrarPorNombre(@RequestParam String nombre) throws MateriaBadRequestException {
         return materiaService.filtrarPorNombre(nombre);
     }
 }

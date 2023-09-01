@@ -4,6 +4,7 @@ import ar.edu.utn.frbb.tup.business.MateriaService;
 import ar.edu.utn.frbb.tup.model.Carrera;
 import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.persistence.CarreraDao;
+import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
@@ -85,7 +86,12 @@ public class CarreraDaoMemoryImpl implements CarreraDao {
             }
             else if (campo.equals("materiaIds")){
                 for (Integer idMateria : (ArrayList<Integer>) valor) {
-                    Materia m = materiaService.getMateriaById(idMateria);
+                    Materia m = null;
+                    try {
+                        m = materiaService.getMateriaById(idMateria);
+                    } catch (MateriaNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
                     agregarMateria(m, getCarreraById(idCarrera));
                 }
             }

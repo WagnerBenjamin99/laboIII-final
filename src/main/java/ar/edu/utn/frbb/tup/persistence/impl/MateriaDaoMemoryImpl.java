@@ -1,11 +1,10 @@
 package ar.edu.utn.frbb.tup.persistence.impl;
 
-
-import ar.edu.utn.frbb.tup.business.MateriaService;
 import ar.edu.utn.frbb.tup.model.Carrera;
 import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.persistence.MateriaDao;
-import org.springframework.beans.factory.annotation.Autowired;
+import ar.edu.utn.frbb.tup.persistence.exception.MateriaBadRequestException;
+import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,9 +14,8 @@ import java.util.*;
 @Service
 public class MateriaDaoMemoryImpl implements MateriaDao {
 
-    private static final Map<Integer, Materia> repositorioMateria = new HashMap<>();
+    private Map<Integer, Materia> repositorioMateria = new HashMap<>();
     private static final Set<String> codigosUsados = new HashSet<>();
-
 
 
     @Override
@@ -30,47 +28,48 @@ public class MateriaDaoMemoryImpl implements MateriaDao {
     }
 
     @Override
-    public Materia findById(int idMateria){
+    public Materia findById(int idMateria) throws MateriaNotFoundException {
         for (Materia m:
              repositorioMateria.values()) {
             if (idMateria == m.getId()) {
                 return m;
             }
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontro la materia que busca");
+        throw new MateriaNotFoundException("Materia no encontrada");
     }
 
     @Override
-    public Materia borrarMateria(Materia materia) {
+    public Materia borrarMateria(Materia materia) throws MateriaNotFoundException {
         if (repositorioMateria.remove(materia.getId(), materia))return materia;
-        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "No se pudo eliminar la materia");
+        throw new MateriaNotFoundException("No se encontro la materia que desea eliminar");
     }
 
     @Override
-    public List<Materia> getAllMaterias() {
+    public List<Materia> getAllMaterias() throws MateriaNotFoundException {
         ArrayList<Materia> mats = new ArrayList<>();
 
         if (repositorioMateria.size() == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay materias disponibles");
+            throw new MateriaNotFoundException("No hay materias disponibles");
         }
         for (Materia mat : repositorioMateria.values())mats.add(mat);
       return mats;
     }
 
     @Override
-    public Materia modificarMateria(Map<String, Object> nuevosDatos, int idMateria) {
+    public Materia modificarMateria(Map<String, Object> nuevosDatos, int idMateria) throws MateriaNotFoundException, MateriaBadRequestException {
         Materia a = findById(idMateria);
-        nuevosDatos.forEach((campo, valor) -> {
 
+        for (Map.Entry<String, Object> entry : nuevosDatos.entrySet()) {
+            String campo = entry.getKey();
+            Object valor = entry.getValue();
             if (campo.equals("nombre")) {
                 a.setNombre((String) valor);
             } else if (campo.equals("anio")) {
                 a.setAnio((Integer) valor);
             } else if (campo.equals("cuatrimestre")) {
                 a.setCuatrimestre((Integer) valor);
-            }
-            else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los datos proporcionados son incorrectos");;
-        });
+            } else throw new MateriaBadRequestException("El campo que desea modificar no existe");
+        }
 
         return a;
     }
@@ -93,7 +92,7 @@ public class MateriaDaoMemoryImpl implements MateriaDao {
     }
 
     @Override
-    public List<Materia> ordenarMaterias(String ordenamiento) {
+    public List<Materia> ordenarMaterias(String ordenamiento) throws MateriaBadRequestException {
 
         ArrayList<Materia> materias = new ArrayList<>(repositorioMateria.values());
 
@@ -111,32 +110,31 @@ public class MateriaDaoMemoryImpl implements MateriaDao {
                 materias.sort(Comparator.comparing(Materia::getCodigo).reversed());
                 break;
             default:
-                materias.sort(Comparator.comparing(Materia::getNombre));
-                break;
+                throw new MateriaBadRequestException("Metodo de ordenamiento incorrecto");
         }
         return materias;
     }
 
     @Override
-    public Materia filtrarPorNombre(String nombre) {
+    public Materia filtrarPorNombre(String nombre) throws MateriaBadRequestException {
 
         for (Materia m: repositorioMateria.values()) {
             if (m.getNombre().equals(nombre)){
                 return m;
             }
         }
-        throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "No existen materias con ese nombre."
-        );
+        throw new MateriaBadRequestException("Materia no encontrada");
     }
 
     @Override
-    public Materia asignarCarrera(Carrera c, Materia m) {
+    public Materia asignarCarrera(Carrera c, Materia m) throws MateriaBadRequestException {
         for (Materia materia : repositorioMateria.values()){
-            if (m.equals(materia))materia.setCarrera(c);
+            if (m.equals(materia))
+            {
+                materia.setCarrera(c);
+                return materia;
+            }
         }
-        throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "Materia inexistente"
-        );
+        throw new MateriaBadRequestException("Materia no encontrada");
     }
 }
