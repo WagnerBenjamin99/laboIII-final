@@ -95,5 +95,17 @@ public class Carrera {
     public int hashCode() {
         return Objects.hash(id, nombre, codigo, cantidadCuatrimestres, idDepartamento, materiasList);
     }
+
+    @Override
+    public String toString() {
+        return "Carrera{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", codigo='" + codigo + '\'' +
+                ", cantidadCuatrimestres=" + cantidadCuatrimestres +
+                ", idDepartamento=" + idDepartamento +
+                ", materiasList=" + materiasList +
+                '}';
+    }
 }
 

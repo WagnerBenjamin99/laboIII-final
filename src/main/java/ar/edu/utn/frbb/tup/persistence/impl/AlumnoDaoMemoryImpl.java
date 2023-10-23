@@ -130,15 +130,17 @@ public class AlumnoDaoMemoryImpl implements AlumnoDao {
     @Override
     public Asignatura aprobarAsignatura(Alumno alumno, int idAsignatura, int nota) throws MateriaBadRequestException, AlumnoNotFoundException, AsignaturaNotFoundException {
         Asignatura actualizada = new Asignatura();
-        for (Asignatura a : alumno.obtenerListaAsignaturas()) {
+        if(alumno.obtenerListaAsignaturas().size()!=0) {
+            for (Asignatura a : alumno.obtenerListaAsignaturas()) {
 
-            if (a.getMateria().getId() == idAsignatura) {
-                a.setEstado(EstadoAsignatura.APROBADA);
-                a.setNota(nota);
-                return a;
+                if (a.getMateria().getId() == idAsignatura) {
+                    a.setEstado(EstadoAsignatura.APROBADA);
+                    a.setNota(nota);
+                    return a;
+                }
+
             }
-
-        }
-        throw new AsignaturaNotFoundException("Asignatura no encontrada");
+            throw new AsignaturaNotFoundException("Asignatura no encontrada");
+        }throw new AsignaturaNotFoundException("El alumno no esta inscripto en ninguna materia");
     }
 }

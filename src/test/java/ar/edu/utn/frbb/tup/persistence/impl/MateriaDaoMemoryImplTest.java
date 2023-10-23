@@ -5,12 +5,14 @@ import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.model.Profesor;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaBadRequestException;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -25,7 +27,7 @@ class MateriaDaoMemoryImplTest {
     private Map<Integer, Materia> repositorioMateria;
     @InjectMocks
     private MateriaDaoMemoryImpl materiaDaoMemoryImpl;
-    private static List<Materia> repositorioValues = new ArrayList<>();
+    private static List<Materia> repositorioValues;
 
 
 
@@ -33,6 +35,9 @@ class MateriaDaoMemoryImplTest {
     void setUp() {
 
         MockitoAnnotations.openMocks(this);
+        Mockito.reset(repositorioMateria);
+
+        repositorioValues = new ArrayList<>();
 
         Materia m1 = new Materia("labo I", 1, 1, null);
         Materia m2 = new Materia("labo II", 1, 2, null);
@@ -49,6 +54,7 @@ class MateriaDaoMemoryImplTest {
         repositorioValues.add(m4);
     }
 
+
     @Test
     void testSave() {
         Materia result = materiaDaoMemoryImpl.save(new Materia("nombre", 0, 0, new Profesor("nombre", "apellido", "titulo")));
@@ -59,14 +65,14 @@ class MateriaDaoMemoryImplTest {
     }
 
     @Test
-    void testFindByIdException() throws MateriaNotFoundException {
+    void testFindById_Exception() throws MateriaNotFoundException {
 
         Assertions.assertThrows(MateriaNotFoundException.class, () -> {
             materiaDaoMemoryImpl.findById(0);
         });
     }
     @Test
-    void testFindByIdSuccess() throws MateriaNotFoundException {
+    void testFindById_Success() throws MateriaNotFoundException {
 
         Materia m = new Materia("labo I", 1, 1, null);
         m.setId(0);
@@ -78,7 +84,7 @@ class MateriaDaoMemoryImplTest {
     }
 
     @Test
-    void testBorrarMateriaException() {
+    void testBorrarMateria_Exception() {
         Materia m = new Materia("labo", 2, 1, new Profesor("luciano", "salotto", "lic"));
         Assertions.assertThrows(MateriaNotFoundException.class, () -> {
         materiaDaoMemoryImpl.borrarMateria(m);
@@ -86,30 +92,30 @@ class MateriaDaoMemoryImplTest {
     }
 
     @Test
-    void testBorrarMateriaSuccess() throws MateriaNotFoundException {
+    void testBorrarMateria_Success() throws MateriaNotFoundException {
         Materia m = new Materia("labo", 2, 1, new Profesor("luciano", "salotto", "lic"));
-        when(materiaDaoMemoryImpl.borrarMateria(m)).thenReturn(m);
+        when(repositorioMateria.remove(anyInt(), any(Materia.class))).thenReturn(true);
 
         Materia result = materiaDaoMemoryImpl.borrarMateria(m);
         Assertions.assertEquals(m, result);
     }
 
     @Test
-    void testGetAllMateriasException(){
+    void testGetAllMaterias_Exception(){
         Materia mat = new Materia("labo", 2, 1, new Profesor("luciano", "salotto", "lic"));Materia m = new Materia("labo", 2, 1, new Profesor("luciano", "salotto", "lic"));
         Assertions.assertThrows(MateriaNotFoundException.class, () -> {
-            materiaDaoMemoryImpl.borrarMateria(mat);
+            materiaDaoMemoryImpl.getAllMaterias();
         });
     }
 
     @Test
-    void testModificarMateriaSuccess() throws MateriaNotFoundException, MateriaBadRequestException {
+    void testModificarMateria_Success() throws MateriaNotFoundException, MateriaBadRequestException {
         Materia mat = new Materia("labo", 2, 1, new Profesor("luciano", "salotto", "lic"));
         mat.setMateriaId(0);
-        List<Materia> repositorioValues = new ArrayList<>();
+        List<Materia> repoValues = new ArrayList<>();
 
-        repositorioValues.add(mat);
-        when(repositorioMateria.values()).thenReturn(repositorioValues);
+        repoValues.add(mat);
+        when(repositorioMateria.values()).thenReturn(repoValues);
 
         Map<String, Object> nuevosDatos = new HashMap<>();
         nuevosDatos.put("nombre", "labo III");
@@ -120,10 +126,11 @@ class MateriaDaoMemoryImplTest {
         esperada.setMateriaId(0);
 
         Assertions.assertEquals(esperada, result);
+        System.out.println("ACA "  +  repositorioValues);
     }
 
     @Test
-    void testModificarMateriaException() throws MateriaNotFoundException, MateriaBadRequestException {
+    void testModificarMateria_Exception() throws MateriaNotFoundException, MateriaBadRequestException {
         Materia mat = new Materia("labo", 2, 1, new Profesor("luciano", "salotto", "lic"));
         when(repositorioMateria.values()).thenReturn(repositorioValues);
 
@@ -133,31 +140,18 @@ class MateriaDaoMemoryImplTest {
         Assertions.assertThrows(MateriaBadRequestException.class, () -> {
             materiaDaoMemoryImpl.modificarMateria(nuevosDatos, 0);
         });
+        System.out.println(repositorioValues);
     }
 
-    @Test
-    void testOrdenarMaterias_Success() throws MateriaBadRequestException {
 
-        when(repositorioMateria.values()).thenReturn(repositorioValues);
-
-        List<Materia> result = materiaDaoMemoryImpl.ordenarMaterias("nombre_asc");
-
-        Assertions.assertEquals(List.of(new Materia("labo I", 1, 1, null),
-                new Materia("labo II", 1, 2, null),
-                new Materia("labo III", 2, 1, null),
-                new Materia("labo IV", 2, 2, null)), result);
-    }
-    @Test
-    void testOrdenarMateria_Exception(){
-        Assertions.assertThrows(MateriaBadRequestException.class, () -> {
-            materiaDaoMemoryImpl.ordenarMaterias("incorrecto");
-        });
-    }
     @Test
     void testFiltrarPorNombre_Success() throws MateriaBadRequestException {
+        Materia esperada = new Materia("labo II", 1, 2, null);
+        esperada.setId(1);
         when(repositorioMateria.values()).thenReturn(repositorioValues);
-        Materia result = materiaDaoMemoryImpl.filtrarPorNombre("labo III");
-        Assertions.assertEquals(new Materia("labo III", 2, 1, null), result);
+        Materia result = materiaDaoMemoryImpl.filtrarPorNombre("labo II");
+        Assertions.assertEquals(esperada, result);
+
     }
     @Test
     void testFiltrarPorNombre_Exception() {
@@ -166,10 +160,36 @@ class MateriaDaoMemoryImplTest {
         Assertions.assertThrows(MateriaBadRequestException.class, () -> {
             materiaDaoMemoryImpl.filtrarPorNombre("programacion");
         });
+
+
+    }
+    @Test
+    void testOrdenarMaterias_Success() throws MateriaBadRequestException {
+        List<Materia> result = new ArrayList<>();
+        List<Materia> esperadas = new ArrayList<>();
+
+        esperadas.add(new Materia("labo I", 1, 1, null));
+        esperadas.add(new Materia("labo II", 1, 2, null));
+        esperadas.add( new Materia("labo III", 2, 1, null));
+        esperadas.add(new Materia("labo IV", 2, 2, null));
+        when(repositorioMateria.values()).thenReturn(repositorioValues);
+
+        result  = materiaDaoMemoryImpl.ordenarMaterias("nombre_asc");
+
+        Assertions.assertEquals(esperadas, result);
+        System.out.println(repositorioValues);
     }
 
     @Test
-    void testAsignarCarrera() throws MateriaBadRequestException {
+    void testOrdenarMateria_Exception(){
+        Assertions.assertThrows(MateriaBadRequestException.class, () -> {
+            materiaDaoMemoryImpl.ordenarMaterias("incorrecto");
+        });
+    }
+
+
+    @Test
+    void testAsignarCarrera_Success() throws MateriaBadRequestException {
         Carrera carrera = new Carrera();
         carrera.setNombre("TUP");
 

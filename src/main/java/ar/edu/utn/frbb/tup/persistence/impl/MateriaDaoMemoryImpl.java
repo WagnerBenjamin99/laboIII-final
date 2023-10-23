@@ -5,9 +5,8 @@ import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.persistence.MateriaDao;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaBadRequestException;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.util.*;
 
@@ -52,7 +51,7 @@ public class MateriaDaoMemoryImpl implements MateriaDao {
             throw new MateriaNotFoundException("No hay materias disponibles");
         }
         for (Materia mat : repositorioMateria.values())mats.add(mat);
-      return mats;
+        return mats;
     }
 
     @Override

@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -30,11 +31,14 @@ class AlumnoDaoMemoryImplTest {
     @InjectMocks
     private AlumnoDaoMemoryImpl alumnoDaoMemoryImpl;
 
-    private static List<Alumno> repositorioValues = new ArrayList<>();
+    private static List<Alumno> repositorioValues;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        Mockito.reset(repositorioAlumnos);
+
+        repositorioValues = new ArrayList<>();
 
         Alumno alumno = new Alumno("Benjamin", "Wagner", 41878485);
         Alumno alumno1 =  new Alumno("Emilce", "Caba", 32619889);
@@ -150,9 +154,10 @@ class AlumnoDaoMemoryImplTest {
         Asignatura a2 = new Asignatura(m2);
 
 
-        Alumno alumno = new Alumno("BENJA", "wagner", 4187982);
+        Alumno alumno = new Alumno("Benjamin", "Wagner", 41878485);
         alumno.agregarAsignatura(a1);
         alumno.agregarAsignatura(a2);
+        System.out.println(alumno.obtenerListaAsignaturas());
 
         when(alumnoDaoMemoryImpl.buscarAsignatura(anyInt(), eq(alumno))).thenReturn(a1);
 

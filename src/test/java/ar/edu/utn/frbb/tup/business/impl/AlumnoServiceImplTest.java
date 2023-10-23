@@ -83,7 +83,7 @@ public class AlumnoServiceImplTest {
     }
 
     @Test
-    public void testBuscarAlumno() throws AlumnoNotFoundException {
+    public void testBuscarAlumno() throws AlumnoNotFoundException, AlumnoBadRequestException {
         // Configurar comportamiento de mocks
         Alumno alumnoEncontrado = new Alumno();
         when(alumnoDao.findAlumno(anyString())).thenReturn(alumnoEncontrado);
@@ -129,7 +129,7 @@ public class AlumnoServiceImplTest {
     }
 
     @Test
-    public void testRecursarAsignatura() throws AlumnoNotFoundException {
+    public void testRecursarAsignatura() throws AlumnoNotFoundException, AlumnoBadRequestException {
         // Configurar comportamiento de mocks
         Alumno alumno = new Alumno();
         when(alumnoDao.buscarPorId(anyInt())).thenReturn(alumno);

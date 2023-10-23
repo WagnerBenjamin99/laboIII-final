@@ -26,7 +26,7 @@ public class AlumnoController {
     private AlumnoService alumnoService;
 
     @GetMapping("/{idAlumno}")
-    public Alumno getAlumno(@PathVariable int idAlumno) throws AlumnoNotFoundException {
+    public Alumno getAlumno(@PathVariable int idAlumno) throws AlumnoNotFoundException, AlumnoBadRequestException {
         System.out.println("ACA");
         return alumnoService.buscarPorId(idAlumno);
     }
@@ -38,7 +38,7 @@ public class AlumnoController {
 
     }
     @GetMapping
-    public Alumno buscarAlumno(@RequestParam String apellido) throws AlumnoNotFoundException {
+    public Alumno buscarAlumno(@RequestParam String apellido) throws AlumnoNotFoundException, AlumnoBadRequestException {
 
        return alumnoService.buscarAlumno(apellido);
     }
@@ -55,8 +55,8 @@ public class AlumnoController {
 
     @PutMapping("/{idAlumno}/asignatura/{idAsignatura}")
     public Asignatura pasarNota(@PathVariable int idAlumno, @PathVariable int idAsignatura,
-                                @RequestParam(value = "6", required = false, defaultValue = "6") int nota,
-                                @RequestParam char estadoAsignatura ) throws CorrelatividadesNoAprobadasException, EstadoIncorrectoException, AlumnoNotFoundException, CorrelatividadException, MateriaBadRequestException, AsignaturaNotFoundException {
+                                @RequestParam(required = false, defaultValue = "6") int nota,
+                                @RequestParam char estadoAsignatura ) throws CorrelatividadesNoAprobadasException, EstadoIncorrectoException, AlumnoNotFoundException, CorrelatividadException, MateriaBadRequestException, AsignaturaNotFoundException, AlumnoBadRequestException {
 
         switch (estadoAsignatura){
             case 'A': return  alumnoService.aprobarAsignatura(idAsignatura,  idAlumno, nota);

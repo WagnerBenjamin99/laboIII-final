@@ -16,7 +16,6 @@ import ar.edu.utn.frbb.tup.persistence.exception.AlumnoBadRequestException;
 import ar.edu.utn.frbb.tup.persistence.exception.AlumnoNotFoundException;
 import ar.edu.utn.frbb.tup.persistence.exception.AsignaturaNotFoundException;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaBadRequestException;
-import ar.edu.utn.frbb.tup.persistence.impl.AlumnoDaoMemoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -36,7 +35,7 @@ public class AlumnoServiceImpl implements AlumnoService {
 
 
     @Override
-    public Asignatura aprobarAsignatura(int materiaId, int idAlumno, int nota) throws EstadoIncorrectoException, CorrelatividadesNoAprobadasException, AlumnoNotFoundException, CorrelatividadException, MateriaBadRequestException, AsignaturaNotFoundException {
+    public Asignatura aprobarAsignatura(int materiaId, int idAlumno, int nota) throws EstadoIncorrectoException, CorrelatividadesNoAprobadasException, AlumnoNotFoundException, CorrelatividadException, MateriaBadRequestException, AsignaturaNotFoundException, AlumnoBadRequestException {
         Alumno alumno = buscarPorId(idAlumno);
         Asignatura asignatura = buscarAsignatura(materiaId, alumno);
 
@@ -60,12 +59,14 @@ public class AlumnoServiceImpl implements AlumnoService {
     }
 
     @Override
-    public Alumno buscarAlumno(String apellido) throws AlumnoNotFoundException {
+    public Alumno buscarAlumno(String apellido) throws AlumnoNotFoundException, AlumnoBadRequestException {
+        if (apellido == null || apellido.length() == 0) throw new AlumnoBadRequestException("El apellido es nulo o vacio");
         return alumnoDao.findAlumno(apellido);
     }
 
-    public Alumno buscarPorId(int id) throws AlumnoNotFoundException {
-        return alumnoDao.buscarPorId(id);
+    public Alumno buscarPorId(int id) throws AlumnoNotFoundException, AlumnoBadRequestException {
+        if(id >= 0) return alumnoDao.buscarPorId(id);
+        throw new AlumnoBadRequestException("El id no puede ser negativo");
     }
 
     @Override
@@ -92,10 +93,8 @@ public class AlumnoServiceImpl implements AlumnoService {
         }
     }
 
-
-
     @Override
-    public Asignatura recursarAsignatura(AsignaturaDto asignaturaDto) throws AlumnoNotFoundException {
+    public Asignatura recursarAsignatura(AsignaturaDto asignaturaDto) throws AlumnoNotFoundException, AlumnoBadRequestException {
 
         Alumno alumno = buscarPorId(asignaturaDto.getIdAlumno());
         Asignatura asignatura = buscarAsignatura(asignaturaDto.getMateria().getMateriaId(), alumno);
@@ -104,20 +103,19 @@ public class AlumnoServiceImpl implements AlumnoService {
     }
 
 
-
     @Override
     public Asignatura buscarAsignatura(int idAsignatura, Alumno a) {
         return alumnoDao.buscarAsignatura(idAsignatura, a);
     }
 
     @Override
-    public Asignatura cursarAsignatura(int idAlumno, int idAsignatura) throws AlumnoNotFoundException {
+    public Asignatura cursarAsignatura(int idAlumno, int idAsignatura) throws AlumnoNotFoundException, AlumnoBadRequestException {
         Alumno a = buscarPorId(idAlumno);
         return alumnoDao.cursarAsignatura(a, idAsignatura);
     }
 
     @Override
-    public Asignatura recursarAsignatura(int idAlumno, int idAsignatura) throws AlumnoNotFoundException {
+    public Asignatura recursarAsignatura(int idAlumno, int idAsignatura) throws AlumnoNotFoundException, AlumnoBadRequestException {
         Alumno alumno = buscarPorId(idAlumno);
         Asignatura asignatura = buscarAsignatura(idAsignatura, alumno);
 

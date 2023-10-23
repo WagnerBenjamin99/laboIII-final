@@ -16,13 +16,13 @@ import ar.edu.utn.frbb.tup.persistence.exception.MateriaBadRequestException;
 import java.util.Map;
 
 public interface AlumnoService {
-    Asignatura aprobarAsignatura(int materiaId, int nota, int idAlumno) throws EstadoIncorrectoException, CorrelatividadesNoAprobadasException, AlumnoNotFoundException, CorrelatividadException, MateriaBadRequestException, AsignaturaNotFoundException;
+    Asignatura aprobarAsignatura(int materiaId, int nota, int idAlumno) throws EstadoIncorrectoException, CorrelatividadesNoAprobadasException, AlumnoNotFoundException, CorrelatividadException, MateriaBadRequestException, AsignaturaNotFoundException, AlumnoBadRequestException;
 
     Alumno crearAlumno(AlumnoDto alumno);
 
-    Alumno buscarAlumno(String apellidoAlumno) throws AlumnoNotFoundException;
+    Alumno buscarAlumno(String apellidoAlumno) throws AlumnoNotFoundException, AlumnoBadRequestException;
 
-    Alumno buscarPorId(int id) throws AlumnoNotFoundException;
+    Alumno buscarPorId(int id) throws AlumnoNotFoundException, AlumnoBadRequestException;
 
     Alumno borrarAlumno(int id) throws AlumnoNotFoundException;
 
@@ -30,13 +30,13 @@ public interface AlumnoService {
 
 
 
-    Asignatura recursarAsignatura(AsignaturaDto asignaturaDto) throws AlumnoNotFoundException;
+    Asignatura recursarAsignatura(AsignaturaDto asignaturaDto) throws AlumnoNotFoundException, AlumnoBadRequestException;
 
 
     public Asignatura buscarAsignatura(int idAsignatura, Alumno a);
 
-    Asignatura cursarAsignatura(int idAlumno, int idAsignatura) throws AlumnoNotFoundException;
+    Asignatura cursarAsignatura(int idAlumno, int idAsignatura) throws AlumnoNotFoundException, AlumnoBadRequestException;
 
-    Asignatura recursarAsignatura(int idAlumno, int idAsignatura) throws AlumnoNotFoundException;
+    Asignatura recursarAsignatura(int idAlumno, int idAsignatura) throws AlumnoNotFoundException, AlumnoBadRequestException;
 
 }
