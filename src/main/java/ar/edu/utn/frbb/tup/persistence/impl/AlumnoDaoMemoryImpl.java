@@ -129,7 +129,7 @@ public class AlumnoDaoMemoryImpl implements AlumnoDao {
 
     @Override
     public Asignatura aprobarAsignatura(Alumno alumno, int idAsignatura, int nota) throws MateriaBadRequestException, AlumnoNotFoundException, AsignaturaNotFoundException {
-        Asignatura actualizada = new Asignatura();
+        System.out.println("aca" + alumno);
         if(alumno.obtenerListaAsignaturas().size()!=0) {
             for (Asignatura a : alumno.obtenerListaAsignaturas()) {
 

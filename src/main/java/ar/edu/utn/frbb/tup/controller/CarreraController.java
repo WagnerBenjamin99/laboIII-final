@@ -3,13 +3,12 @@ package ar.edu.utn.frbb.tup.controller;
 import ar.edu.utn.frbb.tup.business.CarreraService;
 import ar.edu.utn.frbb.tup.model.Carrera;
 import ar.edu.utn.frbb.tup.model.dto.CarreraDto;
-import ar.edu.utn.frbb.tup.model.dto.MateriaDto;
 import ar.edu.utn.frbb.tup.persistence.exception.CarreraBadRequestException;
 import ar.edu.utn.frbb.tup.persistence.exception.CarreraNotFoundException;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Map;
 
@@ -20,34 +19,48 @@ public class CarreraController {
     @Autowired
     private CarreraService carreraService;
 
-
     @PostMapping("/")
-    public Carrera crearCarrera(@RequestBody CarreraDto carreraDto) throws MateriaNotFoundException, CarreraBadRequestException, CarreraNotFoundException {
-        return carreraService.crearCarrera(carreraDto);
+    public ResponseEntity<Carrera> crearCarrera(@RequestBody CarreraDto carreraDto) throws MateriaNotFoundException, CarreraBadRequestException, CarreraNotFoundException {
+        Carrera carrera = carreraService.crearCarrera(carreraDto);
+        return ResponseEntity.ok(carrera);
     }
 
     @GetMapping
-    public List<Carrera> getAllCarreras() throws CarreraNotFoundException {
-        return carreraService.getAllCarreras();
+    public ResponseEntity<Object> getAllCarreras() throws CarreraNotFoundException {
+
+        List<Carrera> carreras = carreraService.getAllCarreras();
+        return ResponseEntity.ok(carreras);
     }
 
     @GetMapping("/{idCarrera}")
-    public Carrera getCarreraById(@PathVariable int idCarrera) throws CarreraNotFoundException {
-        return carreraService.getCarreraById(idCarrera);
+    public ResponseEntity<Carrera> getCarreraById(@PathVariable int idCarrera) throws CarreraNotFoundException {
+
+        Carrera carrera = carreraService.getCarreraById(idCarrera);
+        return ResponseEntity.ok(carrera);
+
     }
 
     @PutMapping("/{idCarrera}/materias/{idMateria}")
-    public Carrera agregarMateria(@PathVariable int idCarrera, @PathVariable int idMateria) throws MateriaNotFoundException, CarreraNotFoundException, CarreraBadRequestException {
-        return carreraService.agregarMateria(idCarrera, idMateria);
+    public ResponseEntity<Carrera> agregarMateria(@PathVariable int idCarrera, @PathVariable int idMateria) throws MateriaNotFoundException, CarreraBadRequestException, CarreraNotFoundException {
+
+        Carrera carrera = carreraService.agregarMateria(idCarrera, idMateria);
+        return ResponseEntity.ok(carrera);
+
     }
 
     @PatchMapping("/{idCarrera}")
-    public Carrera modificarCarrera(@PathVariable int idCarrera, @RequestBody Map<String, Object> nuevosDatos) throws MateriaNotFoundException, CarreraBadRequestException, CarreraNotFoundException {
-        return carreraService.modificarCarrera(nuevosDatos, idCarrera);
+    public ResponseEntity<Carrera> modificarCarrera(@PathVariable int idCarrera, @RequestBody Map<String, Object> nuevosDatos) throws MateriaNotFoundException, CarreraBadRequestException, CarreraNotFoundException {
+
+        Carrera carrera = carreraService.modificarCarrera(nuevosDatos, idCarrera);
+        return ResponseEntity.ok(carrera);
+
     }
 
     @DeleteMapping("/{idCarrera}")
-    public Carrera eliminarCarrera(@PathVariable int  idCarrera) throws MateriaNotFoundException, CarreraNotFoundException {
-        return carreraService.eliminarCarrera(idCarrera);
+    public ResponseEntity<Carrera> eliminarCarrera(@PathVariable int idCarrera) throws MateriaNotFoundException, CarreraNotFoundException {
+
+        Carrera carrera = carreraService.eliminarCarrera(idCarrera);
+        return ResponseEntity.ok(carrera);
+
     }
 }

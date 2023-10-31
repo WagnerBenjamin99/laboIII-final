@@ -161,7 +161,7 @@ class CarreraDaoMemoryImplTest {
     }
 
     @Test
-    void crearCarrera() {
+    void crearCarrera() throws CarreraBadRequestException {
         Carrera c = new Carrera();
         c.setNombre("Ingenieria Electronica");
         c.setCantidadCuatrimestres(10);

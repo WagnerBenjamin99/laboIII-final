@@ -147,20 +147,16 @@ class AlumnoDaoMemoryImplTest {
 
     @Test
     void testAprobarAsignatura() throws MateriaBadRequestException, AsignaturaNotFoundException, AlumnoNotFoundException {
+        Alumno alumno = new Alumno("Benjamin", "Wagner", 41878485);
         Materia m1 = new Materia("labo I", 1, 1, null);
         Materia m2 = new Materia("labo II", 1, 2, null);
         m2.agregarCorrelatividad(m1);
         Asignatura a1 = new Asignatura(m1);
+        a1.setEstado(EstadoAsignatura.CURSADA);
         Asignatura a2 = new Asignatura(m2);
 
-
-        Alumno alumno = new Alumno("Benjamin", "Wagner", 41878485);
         alumno.agregarAsignatura(a1);
         alumno.agregarAsignatura(a2);
-        System.out.println(alumno.obtenerListaAsignaturas());
-
-        when(alumnoDaoMemoryImpl.buscarAsignatura(anyInt(), eq(alumno))).thenReturn(a1);
-
 
         Asignatura esperada = new Asignatura(new Materia("labo I", 1, 1, null));
         esperada.setEstado(EstadoAsignatura.APROBADA);

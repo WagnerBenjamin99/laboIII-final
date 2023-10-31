@@ -6,8 +6,10 @@ import ar.edu.utn.frbb.tup.model.dto.MateriaDto;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaBadRequestException;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,38 +21,45 @@ public class MateriaController {
     private MateriaService materiaService;
 
     @GetMapping
-    public List<Materia> getMaterias() throws MateriaNotFoundException {
-        return materiaService.getAllMaterias();
+    public ResponseEntity<List<Materia>> getMaterias() throws MateriaNotFoundException {
+        List<Materia> materias =  materiaService.getAllMaterias();
+        return ResponseEntity.ok(materias);
     }
 
     @PostMapping("/")
-    public Materia crearMateria(@RequestBody MateriaDto materiaDto) {
-        return materiaService.crearMateria(materiaDto);
+    public ResponseEntity<Materia> crearMateria(@RequestBody MateriaDto materiaDto) {
+        Materia materia = materiaService.crearMateria(materiaDto);
+        return ResponseEntity.ok(materia);
     }
 
     @GetMapping("/{id}")
-    public Materia getMateriaById(@PathVariable Integer id) throws MateriaNotFoundException {
-        return materiaService.getMateriaById(id);
+    public ResponseEntity<Materia> getMateriaById(@PathVariable Integer id) throws MateriaNotFoundException {
+        Materia materia = materiaService.getMateriaById(id);
+        return ResponseEntity.ok(materia);
     }
 
     @DeleteMapping("/{id}")
-    public Materia borrarMateria(@PathVariable Integer id) throws MateriaNotFoundException {
-        return materiaService.borrarMateria(id);
+    public ResponseEntity<Materia> borrarMateria(@PathVariable Integer id) throws MateriaNotFoundException {
+        Materia materia = materiaService.borrarMateria(id);
+        return ResponseEntity.ok(materia);
     }
 
     @PatchMapping("/{id}")
-    public Materia modificarMateria(@PathVariable int id, @RequestBody Map<String, Object> nuevosDatos) throws MateriaNotFoundException, MateriaBadRequestException {
+    public ResponseEntity<Materia> modificarMateria(@PathVariable int id, @RequestBody Map<String, Object> nuevosDatos) throws MateriaNotFoundException, MateriaBadRequestException {
         if(nuevosDatos.size() == 0 || nuevosDatos == null) throw new MateriaBadRequestException("Campos vacios");
-        return materiaService.modificarMateria(nuevosDatos, id);
+        Materia materia = materiaService.modificarMateria(nuevosDatos, id);
+        return ResponseEntity.ok(materia);
     }
 
     @GetMapping("/")
-    public List<Materia> getMateriasOrdenadas(@RequestParam String ordenamiento) throws MateriaBadRequestException {
-        return materiaService.ordenarMaterias(ordenamiento);
+    public ResponseEntity<List<Materia>> getMateriasOrdenadas(@RequestParam String ordenamiento) throws MateriaBadRequestException {
+        List<Materia> materias = materiaService.ordenarMaterias(ordenamiento);
+        return ResponseEntity.ok(materias);
     }
 
     @GetMapping("/filtro")
-    public Materia filtrarPorNombre(@RequestParam String nombre) throws MateriaBadRequestException {
-        return materiaService.filtrarPorNombre(nombre);
+    public ResponseEntity<Materia> filtrarPorNombre(@RequestParam String nombre) throws MateriaBadRequestException {
+        Materia materia =  materiaService.filtrarPorNombre(nombre);
+        return ResponseEntity.ok(materia);
     }
 }

@@ -64,7 +64,6 @@ public class CarreraDaoMemoryImpl implements CarreraDao {
                 carrera.agregarMateria(m);
                 return carrera;
             }
-            //throw new CarreraNotFoundException("Carrera no encontrada");
         }
         throw new CarreraBadRequestException("No se puedo agregar la materia");
 
@@ -119,16 +118,22 @@ public class CarreraDaoMemoryImpl implements CarreraDao {
 
     @Override
     public Carrera eliminarCarrera(Carrera carrera) throws CarreraNotFoundException {
-        if (repositorioCarrera.remove(carrera.getId(), carrera)) return carrera;
+        if (repositorioCarrera.containsValue(carrera))
+        {
+            repositorioCarrera.remove(carrera.getId(), carrera);
+            return carrera;
+        }
         throw new CarreraNotFoundException("No se ecnontro la carrera que desea eliminar");
     }
 
     @Override
-    public Carrera crearCarrera(Carrera carrera) {
+    public Carrera crearCarrera(Carrera carrera) throws CarreraBadRequestException {
         Random r = new Random();
         carrera.setCodigo(generarCodigo());
         carrera.setId(r.nextInt(20));
-        repositorioCarrera.put(carrera.getId(), carrera);
-        return carrera;
+        if (repositorioCarrera.put(carrera.getId(), carrera) == null) {
+            throw new CarreraBadRequestException("No se pudo crear la carrera");
+        }
+        else return carrera;
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface CarreraDao {
-    Carrera crearCarrera(Carrera carrera);
+    Carrera crearCarrera(Carrera carrera) throws CarreraBadRequestException;
     String generarCodigo();
 
     List<Carrera> getAllCarreras() throws CarreraNotFoundException;

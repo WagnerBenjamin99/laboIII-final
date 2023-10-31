@@ -14,6 +14,7 @@ import ar.edu.utn.frbb.tup.persistence.exception.AlumnoNotFoundException;
 import ar.edu.utn.frbb.tup.persistence.exception.AsignaturaNotFoundException;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaBadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -26,42 +27,44 @@ public class AlumnoController {
     private AlumnoService alumnoService;
 
     @GetMapping("/{idAlumno}")
-    public Alumno getAlumno(@PathVariable int idAlumno) throws AlumnoNotFoundException, AlumnoBadRequestException {
-        System.out.println("ACA");
-        return alumnoService.buscarPorId(idAlumno);
+    public ResponseEntity<Alumno> getAlumno(@PathVariable int idAlumno) throws AlumnoNotFoundException, AlumnoBadRequestException {
+        Alumno alumno = alumnoService.borrarAlumno(idAlumno);
+        return ResponseEntity.ok(alumno);
     }
 
     @PostMapping("/")
-    public Alumno crearAlumno(@RequestBody AlumnoDto alumnoDto) {
-
-        return alumnoService.crearAlumno(alumnoDto);
+    public ResponseEntity<Alumno> crearAlumno(@RequestBody AlumnoDto alumnoDto) {
+        Alumno alumno = alumnoService.crearAlumno(alumnoDto);
+        return ResponseEntity.ok(alumno);
 
     }
     @GetMapping
-    public Alumno buscarAlumno(@RequestParam String apellido) throws AlumnoNotFoundException, AlumnoBadRequestException {
-
-       return alumnoService.buscarAlumno(apellido);
+    public ResponseEntity<Alumno> buscarAlumno(@RequestParam String apellido) throws AlumnoNotFoundException, AlumnoBadRequestException {
+        Alumno alumno = alumnoService.buscarAlumno(apellido);
+        return ResponseEntity.ok(alumno);
     }
 
     @DeleteMapping("/")
-    public Alumno borrarAlumno(@RequestParam int id) throws AlumnoNotFoundException {
-        return alumnoService.borrarAlumno(id);
+    public ResponseEntity<Alumno> borrarAlumno(@RequestParam int id) throws AlumnoNotFoundException {
+        Alumno alumno = alumnoService.borrarAlumno(id);
+        return ResponseEntity.ok(alumno);
     }
 
     @PatchMapping("/{idAlumno}")
-    public Alumno editarAlumno(@PathVariable int id, @RequestBody Map<String, Object> nuevosDatos) throws AlumnoNotFoundException, MateriaBadRequestException, AlumnoBadRequestException {
-        return alumnoService.editarAlumno(id, nuevosDatos);
+    public ResponseEntity<Alumno> editarAlumno(@PathVariable int id, @RequestBody Map<String, Object> nuevosDatos) throws AlumnoNotFoundException, MateriaBadRequestException, AlumnoBadRequestException {
+        Alumno alumno = alumnoService.editarAlumno(id, nuevosDatos);
+        return ResponseEntity.ok(alumno);
     }
 
     @PutMapping("/{idAlumno}/asignatura/{idAsignatura}")
-    public Asignatura pasarNota(@PathVariable int idAlumno, @PathVariable int idAsignatura,
+    public ResponseEntity<Asignatura> pasarNota(@PathVariable int idAlumno, @PathVariable int idAsignatura,
                                 @RequestParam(required = false, defaultValue = "6") int nota,
                                 @RequestParam char estadoAsignatura ) throws CorrelatividadesNoAprobadasException, EstadoIncorrectoException, AlumnoNotFoundException, CorrelatividadException, MateriaBadRequestException, AsignaturaNotFoundException, AlumnoBadRequestException {
 
         switch (estadoAsignatura){
-            case 'A': return  alumnoService.aprobarAsignatura(idAsignatura,  idAlumno, nota);
-            case 'C': return  alumnoService.cursarAsignatura(idAlumno, idAsignatura);
-            default: return alumnoService.recursarAsignatura(idAlumno, idAsignatura);
+            case 'A': return ResponseEntity.ok( alumnoService.aprobarAsignatura(idAsignatura,  idAlumno, nota) );
+            case 'C': return  ResponseEntity.ok( alumnoService.cursarAsignatura(idAlumno, idAsignatura) );
+            default: return ResponseEntity.ok( alumnoService.recursarAsignatura(idAlumno, idAsignatura) );
         }
     }
 

@@ -66,7 +66,7 @@ public class CarreraServiceImpl implements CarreraService {
     @Override
     public Carrera modificarCarrera(Map<String, Object> nuevosDatos, int idCarrera) throws MateriaNotFoundException, CarreraBadRequestException, CarreraNotFoundException {
         if (nuevosDatos != null) return carreraDao.modificarCarrera(nuevosDatos, idCarrera);
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Debe incluir datos a modificar");
+        throw new CarreraBadRequestException("Debe incluir campos a modificar");
     }
 
     @Override
