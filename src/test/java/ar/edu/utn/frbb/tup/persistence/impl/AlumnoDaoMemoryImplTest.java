@@ -1,5 +1,6 @@
 package ar.edu.utn.frbb.tup.persistence.impl;
 
+import ar.edu.utn.frbb.tup.business.exception.AsignaturaBadRequestException;
 import ar.edu.utn.frbb.tup.model.*;
 import ar.edu.utn.frbb.tup.persistence.exception.AlumnoBadRequestException;
 import ar.edu.utn.frbb.tup.persistence.exception.AlumnoNotFoundException;
@@ -56,7 +57,7 @@ class AlumnoDaoMemoryImplTest {
     }
 
     @Test
-    void testSaveAlumno_Success() {
+    void testSaveAlumno_Success() throws AlumnoBadRequestException {
         Alumno alumnoAGuardar = new Alumno("nombre", "apellido", 0L);
         when(repositorioAlumnos.put(anyLong(), any(Alumno.class))).thenReturn(alumnoAGuardar);
 
@@ -166,6 +167,76 @@ class AlumnoDaoMemoryImplTest {
         assertEquals(esperada, result);
     }
 
+    @Test
+    void testCursarAsignatura_Success() throws AsignaturaNotFoundException {
+        Alumno a = new Alumno("Bnejamin", "Wagner", 55468684);
+        a.setId(0);
+        Materia m = new Materia("labo", 2, 1, null);
+        m.setId(0);
+        Asignatura asignatura = new Asignatura(m);
+        a.agregarAsignatura(asignatura);
 
+        Asignatura result = alumnoDaoMemoryImpl.cursarAsignatura(a, 0);
+        assertEquals(EstadoAsignatura.CURSADA, result.getEstado());
+
+    }
+
+    @Test
+    void testCursarAsignatura_Excpetion() throws AsignaturaNotFoundException {
+        Alumno a = new Alumno("Bnejamin", "Wagner", 55468684);
+        a.setId(0);
+
+        assertThrows(AsignaturaNotFoundException.class, () -> {
+            alumnoDaoMemoryImpl.cursarAsignatura(a, 10);
+        });
+
+    }
+    @Test
+    void testRecursarAsignatura_Success() throws AsignaturaBadRequestException, AsignaturaNotFoundException {
+        Alumno a = new Alumno("Benjamin", "Wagner" ,1161616);
+        Materia m = new Materia("Labo I", 1, 1, null);
+        m.setId(0);
+        Asignatura asignatura = new Asignatura(m);
+        asignatura.setEstado(EstadoAsignatura.CURSADA);
+        a.agregarAsignatura(asignatura);
+
+        Asignatura result = alumnoDaoMemoryImpl.perderRegularidad(a, 0);
+        assertEquals(EstadoAsignatura.NO_CURSADA, result.getEstado());
+    }
+
+    @Test
+    void testRecursarAsignatura_Exception() throws AsignaturaBadRequestException, AsignaturaNotFoundException {
+        Alumno a = new Alumno("Benjamin", "Wagner" ,1161616);
+        Materia m = new Materia("Labo I", 1, 1, null);
+        m.setId(0);
+        Asignatura asignatura = new Asignatura(m);
+        asignatura.setEstado(EstadoAsignatura.APROBADA);
+        a.agregarAsignatura(asignatura);
+
+        assertThrows(AsignaturaBadRequestException.class, () -> {
+            alumnoDaoMemoryImpl.perderRegularidad(a, 0);
+        });
+    }
+
+    @Test
+    void testBuscarAsignatura_Success() throws AsignaturaNotFoundException {
+        Alumno a = new Alumno("Benjamin", "Wagner" ,1161616);
+        Materia m = new Materia("Labo I", 1, 1, null);
+        m.setId(0);
+        Asignatura asignatura = new Asignatura(m);
+        a.agregarAsignatura(asignatura);
+
+        Asignatura result = alumnoDaoMemoryImpl.buscarAsignatura(0, a);
+        assertEquals(asignatura, result);
+    }
+
+    @Test
+    void testBuscarAsignatura_Exception() throws AsignaturaNotFoundException {
+        Alumno a = new Alumno("Benjamin", "Wagner" ,1161616);
+
+        assertThrows(AsignaturaNotFoundException.class, () -> {
+            alumnoDaoMemoryImpl.buscarAsignatura(1, a);
+        });
+    }
 }
 

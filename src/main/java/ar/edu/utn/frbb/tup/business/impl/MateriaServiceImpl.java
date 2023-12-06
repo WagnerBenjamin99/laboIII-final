@@ -34,7 +34,7 @@ public class MateriaServiceImpl implements MateriaService {
     }
 
     @Override
-    public Materia crearMateria(MateriaDto materia) throws IllegalArgumentException{
+    public Materia crearMateria(MateriaDto materia) throws IllegalArgumentException, MateriaBadRequestException {
         Materia m = new Materia();
         m.setNombre(materia.getNombre());
         m.setAnio(materia.getAnio());
@@ -73,13 +73,8 @@ public class MateriaServiceImpl implements MateriaService {
     }
 
     @Override
-    public Materia filtrarPorNombre(String nombre) throws MateriaBadRequestException {
-        return dao.filtrarPorNombre(nombre);
-    }
-
-    @Override
-    public Materia asignarCarrera(Carrera c, Materia m) {
-        return null;
+    public Materia asignarCarrera(Carrera c, Materia m) throws MateriaBadRequestException {
+        return dao.asignarCarrera(c, m);
     }
 
 

@@ -6,6 +6,7 @@ import ar.edu.utn.frbb.tup.model.dto.MateriaDto;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaBadRequestException;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,7 @@ public class MateriaController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Materia> crearMateria(@RequestBody MateriaDto materiaDto) {
+    public ResponseEntity<Materia> crearMateria(@RequestBody MateriaDto materiaDto) throws MateriaBadRequestException {
         Materia materia = materiaService.crearMateria(materiaDto);
         return ResponseEntity.ok(materia);
     }
@@ -57,9 +58,4 @@ public class MateriaController {
         return ResponseEntity.ok(materias);
     }
 
-    @GetMapping("/filtro")
-    public ResponseEntity<Materia> filtrarPorNombre(@RequestParam String nombre) throws MateriaBadRequestException {
-        Materia materia =  materiaService.filtrarPorNombre(nombre);
-        return ResponseEntity.ok(materia);
-    }
 }

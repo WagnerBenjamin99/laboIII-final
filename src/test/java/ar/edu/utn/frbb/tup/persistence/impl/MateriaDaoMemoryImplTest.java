@@ -56,14 +56,25 @@ class MateriaDaoMemoryImplTest {
 
 
     @Test
-    void testSave() {
-        Materia result = materiaDaoMemoryImpl.save(new Materia("nombre", 0, 0, new Profesor("nombre", "apellido", "titulo")));
+    void testSave_Success() throws MateriaBadRequestException {
+        Materia m = new Materia("nombre", 0, 0, new Profesor("nombre", "apellido", "titulo"));
+        when(repositorioMateria.put(anyInt(), any(Materia.class))).thenReturn(m);
+        Materia result = materiaDaoMemoryImpl.save(m);
         //SETEO ATRIBUTOS QUE SE GENERAN ALEATORIAMENTE
         result.setCodigo(null);
         result.setId(0);
         Assertions.assertEquals(new Materia("nombre", 0, 0, new Profesor("nombre", "apellido", "titulo")), result);
     }
 
+    @Test
+    void testSave_Exception() throws MateriaBadRequestException {
+        Materia m = new Materia("nombre", 0, 0, new Profesor("nombre", "apellido", "titulo"));
+        when(repositorioMateria.put(anyInt(), any(Materia.class))).thenReturn(null);
+
+       Assertions.assertThrows(MateriaBadRequestException.class, () -> {
+           materiaDaoMemoryImpl.save(m);
+       });
+    }
     @Test
     void testFindById_Exception() throws MateriaNotFoundException {
 
@@ -141,27 +152,6 @@ class MateriaDaoMemoryImplTest {
             materiaDaoMemoryImpl.modificarMateria(nuevosDatos, 0);
         });
         System.out.println(repositorioValues);
-    }
-
-
-    @Test
-    void testFiltrarPorNombre_Success() throws MateriaBadRequestException {
-        Materia esperada = new Materia("labo II", 1, 2, null);
-        esperada.setId(1);
-        when(repositorioMateria.values()).thenReturn(repositorioValues);
-        Materia result = materiaDaoMemoryImpl.filtrarPorNombre("labo II");
-        Assertions.assertEquals(esperada, result);
-
-    }
-    @Test
-    void testFiltrarPorNombre_Exception() {
-        when(repositorioMateria.values()).thenReturn(repositorioValues);
-
-        Assertions.assertThrows(MateriaBadRequestException.class, () -> {
-            materiaDaoMemoryImpl.filtrarPorNombre("programacion");
-        });
-
-
     }
     @Test
     void testOrdenarMaterias_Success() throws MateriaBadRequestException {

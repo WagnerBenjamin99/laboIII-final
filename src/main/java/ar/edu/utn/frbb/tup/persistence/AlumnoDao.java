@@ -1,5 +1,6 @@
 package ar.edu.utn.frbb.tup.persistence;
 
+import ar.edu.utn.frbb.tup.business.exception.AsignaturaBadRequestException;
 import ar.edu.utn.frbb.tup.model.Alumno;
 import ar.edu.utn.frbb.tup.model.Asignatura;
 import ar.edu.utn.frbb.tup.model.exception.CorrelatividadException;
@@ -12,7 +13,7 @@ import java.util.Map;
 
 public interface AlumnoDao {
 
-    Alumno saveAlumno(Alumno a);
+    Alumno saveAlumno(Alumno a) throws AlumnoBadRequestException;
 
     Alumno findAlumno(String apellidoAlumno) throws AlumnoNotFoundException;
 
@@ -24,10 +25,10 @@ public interface AlumnoDao {
     Alumno editarAlumno(int id, Map<String, Object> nuevosDatos) throws AlumnoNotFoundException, MateriaBadRequestException, AlumnoBadRequestException;
 
 
-    Asignatura perderRegularidad(Alumno alumno, int idAsignatura);
+    Asignatura perderRegularidad(Alumno alumno, int idAsignatura) throws AsignaturaBadRequestException, AsignaturaNotFoundException;
 
-    Asignatura cursarAsignatura(Alumno a, int materiaId);
+    Asignatura cursarAsignatura(Alumno a, int materiaId) throws AsignaturaNotFoundException;
 
-    Asignatura buscarAsignatura(int idAsignatura, Alumno alumno);
+    Asignatura buscarAsignatura(int idAsignatura, Alumno alumno) throws AsignaturaNotFoundException;
     public Asignatura aprobarAsignatura(Alumno alumno, int idAsignatura, int nota) throws CorrelatividadException, MateriaBadRequestException, AlumnoNotFoundException, AsignaturaNotFoundException;
 }

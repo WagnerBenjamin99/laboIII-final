@@ -1,6 +1,7 @@
 package ar.edu.utn.frbb.tup.controller;
 
 import ar.edu.utn.frbb.tup.business.AlumnoService;
+import ar.edu.utn.frbb.tup.business.exception.AsignaturaBadRequestException;
 import ar.edu.utn.frbb.tup.model.Alumno;
 import ar.edu.utn.frbb.tup.model.Asignatura;
 import ar.edu.utn.frbb.tup.model.dto.AlumnoDto;
@@ -33,7 +34,7 @@ public class AlumnoController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Alumno> crearAlumno(@RequestBody AlumnoDto alumnoDto) {
+    public ResponseEntity<Alumno> crearAlumno(@RequestBody AlumnoDto alumnoDto) throws AlumnoBadRequestException {
         Alumno alumno = alumnoService.crearAlumno(alumnoDto);
         return ResponseEntity.ok(alumno);
 
@@ -51,15 +52,15 @@ public class AlumnoController {
     }
 
     @PatchMapping("/{idAlumno}")
-    public ResponseEntity<Alumno> editarAlumno(@PathVariable int id, @RequestBody Map<String, Object> nuevosDatos) throws AlumnoNotFoundException, MateriaBadRequestException, AlumnoBadRequestException {
-        Alumno alumno = alumnoService.editarAlumno(id, nuevosDatos);
+    public ResponseEntity<Alumno> editarAlumno(@PathVariable int idAlumno, @RequestBody Map<String, Object> nuevosDatos) throws AlumnoNotFoundException, MateriaBadRequestException, AlumnoBadRequestException {
+        Alumno alumno = alumnoService.editarAlumno(idAlumno, nuevosDatos);
         return ResponseEntity.ok(alumno);
     }
 
     @PutMapping("/{idAlumno}/asignatura/{idAsignatura}")
     public ResponseEntity<Asignatura> pasarNota(@PathVariable int idAlumno, @PathVariable int idAsignatura,
                                 @RequestParam(required = false, defaultValue = "6") int nota,
-                                @RequestParam char estadoAsignatura ) throws CorrelatividadesNoAprobadasException, EstadoIncorrectoException, AlumnoNotFoundException, CorrelatividadException, MateriaBadRequestException, AsignaturaNotFoundException, AlumnoBadRequestException {
+                                @RequestParam char estadoAsignatura ) throws CorrelatividadesNoAprobadasException, EstadoIncorrectoException, AlumnoNotFoundException, CorrelatividadException, MateriaBadRequestException, AsignaturaNotFoundException, AlumnoBadRequestException, AsignaturaBadRequestException {
 
         switch (estadoAsignatura){
             case 'A': return ResponseEntity.ok( alumnoService.aprobarAsignatura(idAsignatura,  idAlumno, nota) );

@@ -1,5 +1,6 @@
 package ar.edu.utn.frbb.tup.business;
 
+import ar.edu.utn.frbb.tup.business.exception.AsignaturaBadRequestException;
 import ar.edu.utn.frbb.tup.model.Alumno;
 import ar.edu.utn.frbb.tup.model.Asignatura;
 import ar.edu.utn.frbb.tup.model.Materia;
@@ -16,9 +17,9 @@ import ar.edu.utn.frbb.tup.persistence.exception.MateriaBadRequestException;
 import java.util.Map;
 
 public interface AlumnoService {
-    Asignatura aprobarAsignatura(int materiaId, int nota, int idAlumno) throws EstadoIncorrectoException, CorrelatividadesNoAprobadasException, AlumnoNotFoundException, CorrelatividadException, MateriaBadRequestException, AsignaturaNotFoundException, AlumnoBadRequestException;
+    Asignatura aprobarAsignatura(int materiaId, int nota, int idAlumno) throws EstadoIncorrectoException, CorrelatividadesNoAprobadasException, AlumnoNotFoundException, CorrelatividadException, MateriaBadRequestException, AsignaturaNotFoundException, AlumnoBadRequestException, AsignaturaBadRequestException;
 
-    Alumno crearAlumno(AlumnoDto alumno);
+    Alumno crearAlumno(AlumnoDto alumno) throws AlumnoBadRequestException;
 
     Alumno buscarAlumno(String apellidoAlumno) throws AlumnoNotFoundException, AlumnoBadRequestException;
 
@@ -29,14 +30,10 @@ public interface AlumnoService {
     Alumno editarAlumno(int id, Map<String, Object> nuevosDatos) throws AlumnoNotFoundException, MateriaBadRequestException, AlumnoBadRequestException;
 
 
+    Asignatura buscarAsignatura(int idAsignatura, Alumno a) throws AsignaturaNotFoundException;
 
-    Asignatura recursarAsignatura(AsignaturaDto asignaturaDto) throws AlumnoNotFoundException, AlumnoBadRequestException;
+    Asignatura cursarAsignatura(int idAlumno, int idAsignatura) throws AlumnoNotFoundException, AlumnoBadRequestException, AsignaturaNotFoundException;
 
-
-    public Asignatura buscarAsignatura(int idAsignatura, Alumno a);
-
-    Asignatura cursarAsignatura(int idAlumno, int idAsignatura) throws AlumnoNotFoundException, AlumnoBadRequestException;
-
-    Asignatura recursarAsignatura(int idAlumno, int idAsignatura) throws AlumnoNotFoundException, AlumnoBadRequestException;
+    Asignatura recursarAsignatura(int idAlumno, int idAsignatura) throws AlumnoNotFoundException, AlumnoBadRequestException, AsignaturaNotFoundException, AsignaturaBadRequestException;
 
 }

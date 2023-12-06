@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface MateriaService {
-    Materia crearMateria(MateriaDto inputData) throws IllegalArgumentException;
+    Materia crearMateria(MateriaDto inputData) throws IllegalArgumentException, MateriaBadRequestException;
 
     List<Materia> getAllMaterias() throws MateriaNotFoundException;
 
@@ -22,7 +22,5 @@ public interface MateriaService {
 
     List<Materia> ordenarMaterias(String ordenamiento) throws MateriaBadRequestException;
 
-    Materia filtrarPorNombre(String nombre) throws MateriaBadRequestException;
-
-    Materia asignarCarrera(Carrera c, Materia m);
+    Materia asignarCarrera(Carrera c, Materia m) throws MateriaBadRequestException;
 }

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface MateriaDao {
-    Materia save(Materia materia);
+    Materia save(Materia materia) throws MateriaBadRequestException;
 
     Materia findById(int idMateria) throws MateriaNotFoundException;
 
@@ -22,8 +22,6 @@ public interface MateriaDao {
     String generarCodigo();
 
     List<Materia> ordenarMaterias(String ordenamiento) throws MateriaBadRequestException;
-
-    Materia filtrarPorNombre(String nombre) throws MateriaBadRequestException;
 
     Materia asignarCarrera(Carrera c, Materia m) throws MateriaBadRequestException;
 }

@@ -35,8 +35,6 @@ class CarreraServiceImplTest {
     private CarreraDaoMemoryImpl carreraDao;
     @Mock
     private MateriaServiceImpl materiaService;
-    @Mock
-    private Map<Integer, Carrera> repositorioCarrera;
 
     @InjectMocks
     private CarreraServiceImpl carreraService;

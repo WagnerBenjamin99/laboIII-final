@@ -8,8 +8,9 @@ import ar.edu.utn.frbb.tup.persistence.exception.CarreraBadRequestException;
 import ar.edu.utn.frbb.tup.persistence.exception.CarreraNotFoundException;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
-
+import org.springframework.stereotype.Service;
 
 
 import java.util.*;
@@ -129,11 +130,13 @@ public class CarreraDaoMemoryImpl implements CarreraDao {
     @Override
     public Carrera crearCarrera(Carrera carrera) throws CarreraBadRequestException {
         Random r = new Random();
-        carrera.setCodigo(generarCodigo());
-        carrera.setId(r.nextInt(20));
-        if (repositorioCarrera.put(carrera.getId(), carrera) == null) {
-            throw new CarreraBadRequestException("No se pudo crear la carrera");
+
+        if (!repositorioCarrera.containsValue(carrera)) {
+            carrera.setCodigo(generarCodigo());
+            carrera.setId(r.nextInt(20));
+            repositorioCarrera.put(carrera.getId(), carrera);
+            return carrera;
         }
-        else return carrera;
+        throw new CarreraBadRequestException("Ya existe la carrera.");
     }
 }

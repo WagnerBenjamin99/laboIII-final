@@ -2,6 +2,7 @@ package ar.edu.utn.frbb.tup.business.impl;
 
 import ar.edu.utn.frbb.tup.business.AlumnoService;
 import ar.edu.utn.frbb.tup.business.AsignaturaService;
+import ar.edu.utn.frbb.tup.business.exception.AsignaturaBadRequestException;
 import ar.edu.utn.frbb.tup.model.Alumno;
 import ar.edu.utn.frbb.tup.model.Asignatura;
 import ar.edu.utn.frbb.tup.model.EstadoAsignatura;
@@ -35,19 +36,25 @@ public class AlumnoServiceImpl implements AlumnoService {
 
 
     @Override
-    public Asignatura aprobarAsignatura(int materiaId, int idAlumno, int nota) throws EstadoIncorrectoException, CorrelatividadesNoAprobadasException, AlumnoNotFoundException, CorrelatividadException, MateriaBadRequestException, AsignaturaNotFoundException, AlumnoBadRequestException {
+    public Asignatura aprobarAsignatura(int materiaId, int idAlumno, int nota) throws EstadoIncorrectoException, CorrelatividadesNoAprobadasException, AlumnoNotFoundException, CorrelatividadException, MateriaBadRequestException, AsignaturaNotFoundException, AlumnoBadRequestException, AsignaturaBadRequestException {
         Alumno alumno = buscarPorId(idAlumno);
         Asignatura asignatura = buscarAsignatura(materiaId, alumno);
+        if (nota >= 6 && nota <= 10) {
+            if(asignatura.getMateria().getCorrelatividades().size() != 0) {
+                for (Materia correlativa :
+                        asignatura.getMateria().getCorrelatividades()) {
+                    chequearCorrelatividad(correlativa, alumno);
+                }
+                return alumnoDao.aprobarAsignatura(alumno, materiaId, nota);
+            }
+            else return alumnoDao.aprobarAsignatura(alumno, materiaId, nota);
 
-        for (Materia correlativa :
-                asignatura.getMateria().getCorrelatividades()){
-            chequearCorrelatividad(correlativa, alumno);
         }
-        return alumnoDao.aprobarAsignatura(alumno, materiaId, nota);
+        else throw new AsignaturaBadRequestException("Nota incorrecta, debe estar en entre 6 y 10 para aprobar");
     }
 
     @Override
-    public Alumno crearAlumno(AlumnoDto alumno) {
+    public Alumno crearAlumno(AlumnoDto alumno) throws AlumnoBadRequestException {
         Alumno a = new Alumno();
         a.setNombre(alumno.getNombre());
         a.setApellido(alumno.getApellido());
@@ -80,10 +87,11 @@ public class AlumnoServiceImpl implements AlumnoService {
 
     @Override
     public Alumno editarAlumno(int id, Map<String, Object> nuevosDatos) throws AlumnoNotFoundException, AlumnoBadRequestException, MateriaBadRequestException {
-        return alumnoDao.editarAlumno(id, nuevosDatos);
+        if (nuevosDatos.size()==0)throw new AlumnoBadRequestException("Debe incluir datos a modificar");
+        else return alumnoDao.editarAlumno(id, nuevosDatos);
     }
 
-    public void chequearCorrelatividad(Materia correlativa, Alumno alumno) throws CorrelatividadesNoAprobadasException {
+    void chequearCorrelatividad(Materia correlativa, Alumno alumno) throws CorrelatividadesNoAprobadasException {
         for (Asignatura a: alumno.obtenerListaAsignaturas()) {
             if (correlativa.getNombre().equals(a.getNombreAsignatura())) {
                 if (!EstadoAsignatura.APROBADA.equals(a.getEstado())) {
@@ -93,29 +101,20 @@ public class AlumnoServiceImpl implements AlumnoService {
         }
     }
 
-    @Override
-    public Asignatura recursarAsignatura(AsignaturaDto asignaturaDto) throws AlumnoNotFoundException, AlumnoBadRequestException {
-
-        Alumno alumno = buscarPorId(asignaturaDto.getIdAlumno());
-        Asignatura asignatura = buscarAsignatura(asignaturaDto.getMateria().getMateriaId(), alumno);
-
-        return alumnoDao.perderRegularidad(alumno, asignaturaDto.getMateria().getId());
-    }
-
 
     @Override
-    public Asignatura buscarAsignatura(int idAsignatura, Alumno a) {
+    public Asignatura buscarAsignatura(int idAsignatura, Alumno a) throws AsignaturaNotFoundException {
         return alumnoDao.buscarAsignatura(idAsignatura, a);
     }
 
     @Override
-    public Asignatura cursarAsignatura(int idAlumno, int idAsignatura) throws AlumnoNotFoundException, AlumnoBadRequestException {
+    public Asignatura cursarAsignatura(int idAlumno, int idAsignatura) throws AlumnoNotFoundException, AlumnoBadRequestException, AsignaturaNotFoundException {
         Alumno a = buscarPorId(idAlumno);
         return alumnoDao.cursarAsignatura(a, idAsignatura);
     }
 
     @Override
-    public Asignatura recursarAsignatura(int idAlumno, int idAsignatura) throws AlumnoNotFoundException, AlumnoBadRequestException {
+    public Asignatura recursarAsignatura(int idAlumno, int idAsignatura) throws AlumnoNotFoundException, AlumnoBadRequestException, AsignaturaNotFoundException, AsignaturaBadRequestException {
         Alumno alumno = buscarPorId(idAlumno);
         Asignatura asignatura = buscarAsignatura(idAsignatura, alumno);
 

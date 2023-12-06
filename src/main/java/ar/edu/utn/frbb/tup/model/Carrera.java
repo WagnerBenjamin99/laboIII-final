@@ -88,12 +88,12 @@ public class Carrera {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Carrera carrera = (Carrera) o;
-        return id == carrera.id && cantidadCuatrimestres == carrera.cantidadCuatrimestres && idDepartamento == carrera.idDepartamento && Objects.equals(nombre, carrera.nombre) && Objects.equals(codigo, carrera.codigo) && Objects.equals(materiasList, carrera.materiasList);
+        return cantidadCuatrimestres == carrera.cantidadCuatrimestres && idDepartamento == carrera.idDepartamento && Objects.equals(nombre, carrera.nombre)  && Objects.equals(materiasList, carrera.materiasList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre, codigo, cantidadCuatrimestres, idDepartamento, materiasList);
+        return Objects.hash(nombre, cantidadCuatrimestres, idDepartamento, materiasList);
     }
 
     @Override

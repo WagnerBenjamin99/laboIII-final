@@ -154,14 +154,25 @@ class CarreraDaoMemoryImplTest {
         Carrera c = new Carrera();
         c.setId(0);
         c.setNombre("TUP");
+        when(repositorioCarrera.containsValue(any())).thenReturn(true);
         when(repositorioCarrera.remove(anyInt(), any(Carrera.class))).thenReturn(true);
 
         Carrera result = carreraDaoMemory.eliminarCarrera(c);
         Assertions.assertEquals(c, result);
     }
+    @Test
+    void eliminarCarrera_Exception() throws CarreraNotFoundException {
+        Carrera c = new Carrera();
+        c.setId(0);
+        c.setNombre("TUP");
+
+        assertThrows(CarreraNotFoundException.class, () -> {
+            carreraDaoMemory.eliminarCarrera(c);
+        });
+    }
 
     @Test
-    void crearCarrera() throws CarreraBadRequestException {
+    void testCrearCarrera() throws CarreraBadRequestException {
         Carrera c = new Carrera();
         c.setNombre("Ingenieria Electronica");
         c.setCantidadCuatrimestres(10);
@@ -171,5 +182,20 @@ class CarreraDaoMemoryImplTest {
         Carrera result = carreraDaoMemory.crearCarrera(c);
 
         assertEquals(c, result);
+    }
+
+    @Test
+    void testCrearCarrera_Exception() throws CarreraBadRequestException {
+        Carrera c = new Carrera();
+        c.setNombre("Ingenieria Electronica");
+        c.setCantidadCuatrimestres(10);
+        c.setIdDepartamento(2);
+        c.setId(4);
+
+        when(repositorioCarrera.containsValue(any())).thenReturn(true);
+
+        assertThrows(CarreraBadRequestException.class, () -> {
+            carreraDaoMemory.crearCarrera(c);
+        });
     }
 }

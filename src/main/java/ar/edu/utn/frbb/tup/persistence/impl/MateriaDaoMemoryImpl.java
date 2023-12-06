@@ -5,12 +5,13 @@ import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.persistence.MateriaDao;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaBadRequestException;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 
 import java.util.*;
 
-@Service
+@Repository
 public class MateriaDaoMemoryImpl implements MateriaDao {
 
     private Map<Integer, Materia> repositorioMateria = new HashMap<>();
@@ -18,12 +19,12 @@ public class MateriaDaoMemoryImpl implements MateriaDao {
 
 
     @Override
-    public Materia save(Materia materia) {
+    public Materia save(Materia materia) throws MateriaBadRequestException {
         Random random = new Random();
         materia.setMateriaId(random.nextInt(20));
         materia.setCodigo(generarCodigo());
-        repositorioMateria.put(materia.getId(), materia);
-        return materia;
+        if(repositorioMateria.put(materia.getId(), materia) != null )return materia;
+        throw new MateriaBadRequestException("No se pudo crear la materia");
     }
 
     @Override
@@ -95,7 +96,7 @@ public class MateriaDaoMemoryImpl implements MateriaDao {
 
         ArrayList<Materia> materias = new ArrayList<>(repositorioMateria.values());
 
-        switch (ordenamiento) {
+        switch (ordenamiento.toLowerCase()) {
             case "nombre_asc":
                 materias.sort(Comparator.comparing(Materia::getNombre));
                 break;
@@ -112,17 +113,6 @@ public class MateriaDaoMemoryImpl implements MateriaDao {
                 throw new MateriaBadRequestException("Metodo de ordenamiento incorrecto");
         }
         return materias;
-    }
-
-    @Override
-    public Materia filtrarPorNombre(String nombre) throws MateriaBadRequestException {
-
-        for (Materia m: repositorioMateria.values()) {
-            if (m.getNombre().equals(nombre)){
-                return m;
-            }
-        }
-        throw new MateriaBadRequestException("Materia no encontrada");
     }
 
     @Override
