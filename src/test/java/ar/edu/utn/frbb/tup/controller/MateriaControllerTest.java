@@ -111,11 +111,14 @@ public class MateriaControllerTest {
                 .andExpect(status().isOk());
     }
     @Test
-    public void getMaterias_Exception() throws MateriaNotFoundException {
+    public void getMaterias_Exception() throws Exception {
         when(materiaController.getMaterias()).thenThrow(MateriaNotFoundException.class);
-        assertThrows(MateriaNotFoundException.class, () -> {
-            materiaController.getMaterias();
-        });
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/materia")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+
     }
     @Test
     public void modificarMateria_Success() throws Exception {
@@ -131,7 +134,6 @@ public class MateriaControllerTest {
         Mockito.when(materiaService.modificarMateria(nuevosDatos, 0)).thenReturn(esperada);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.patch("/materia/{id}", 0)
                         .content(new ObjectMapper().writeValueAsString(nuevosDatos))
-                        .param("nuevosDatos", String.valueOf(nuevosDatos))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -198,9 +200,10 @@ public class MateriaControllerTest {
     public void getMateriaById_Exception() throws Exception {
         Materia m = new Materia("labo III", 2, 1, null);
         when(materiaController.getMateriaById(anyInt())).thenThrow(MateriaNotFoundException.class);
-        Assertions.assertThrows(MateriaNotFoundException.class, () -> {
-            materiaController.getMateriaById(1);
-        });
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/materia/{id}", 1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound())
+                .andReturn();
     }
 
     @Test
