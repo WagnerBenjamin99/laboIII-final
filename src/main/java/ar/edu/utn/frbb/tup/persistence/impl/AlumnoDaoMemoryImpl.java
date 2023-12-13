@@ -33,7 +33,7 @@ public class AlumnoDaoMemoryImpl implements AlumnoDao {
         m2.setMateriaId(1);
 
         Random random = new Random();
-        alumno.setId(random.nextLong(10));
+        alumno.setId(random.nextLong(20));
 
         Asignatura a = new Asignatura(m);
         Asignatura a2 = new Asignatura(m2);
