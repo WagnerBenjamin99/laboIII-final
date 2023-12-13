@@ -1,0 +1,279 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": true,
+    "cutInterfaceStructures": true,
+    "cutDataStructures": true,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 3,
+    "backwardDepth": 3,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "ar.edu.utn.frbb.tup.controller.CarreraControllerTest",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_100278 { 
+   	label=edu
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_1878955145 { 
+   	label=utn
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   Carrera395227868[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Carrera</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   cantidadCuatrimestres: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   codigo: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   id: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   idDepartamento: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   materiasList: List&lt;Materia&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   nombre: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ agregarMateria(m: Materia)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+CarreraController1429308361[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)CarreraController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   carreraService: CarreraService [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ agregarMateria(idCarrera: int, idMateria: int): ResponseEntity&lt;Carrera&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ crearCarrera(carreraDto: CarreraDto): ResponseEntity&lt;Carrera&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ eliminarCarrera(idCarrera: int): ResponseEntity&lt;Carrera&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getCarreraById(idCarrera: int): ResponseEntity&lt;Carrera&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ modificarCarrera(idCarrera: int, nuevosDatos: Map&lt;String, Object&gt;): ResponseEntity&lt;Carrera&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+CarreraControllerTest1429308361[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)CarreraControllerTest</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   carreraController: CarreraController [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   carreraService: CarreraService [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mockMvc: MockMvc [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># agregarMateria_Exception()</TD></TR>
+<TR><TD ALIGN="LEFT" ># agregarMateria_Success()</TD></TR>
+<TR><TD ALIGN="LEFT" ># crearCarrera_Exception()</TD></TR>
+<TR><TD ALIGN="LEFT" ># crearCarrera_Success()</TD></TR>
+<TR><TD ALIGN="LEFT" ># eliminarCarrera_Exception()</TD></TR>
+<TR><TD ALIGN="LEFT" ># eliminarCarrera_Success()</TD></TR>
+<TR><TD ALIGN="LEFT" ># getAllCarreras_Exception()</TD></TR>
+<TR><TD ALIGN="LEFT" ># getAllCarreras_Success()</TD></TR>
+<TR><TD ALIGN="LEFT" ># getCarreraById_Exception()</TD></TR>
+<TR><TD ALIGN="LEFT" ># getCarreraById_Success()</TD></TR>
+<TR><TD ALIGN="LEFT" ># modificarCarrera_Exception()</TD></TR>
+<TR><TD ALIGN="LEFT" ># modificarCarrera_Success()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+CarreraDaoMemoryImpl1349341572[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)CarreraDaoMemoryImpl</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   materiaService: MateriaService [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   repositorioCarrera: Map&lt;Integer, Carrera&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ agregarMateria(m: Materia, c: Carrera): Carrera</TD></TR>
+<TR><TD ALIGN="LEFT" >+ crearCarrera(carrera: Carrera): Carrera</TD></TR>
+<TR><TD ALIGN="LEFT" >+ crearCarreraConMaterias(materias: List&lt;Materia&gt;, carrera: Carrera): Carrera</TD></TR>
+<TR><TD ALIGN="LEFT" >+ eliminarCarrera(carrera: Carrera): Carrera</TD></TR>
+<TR><TD ALIGN="LEFT" >+ generarCodigo(): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getCarreraById(idCarrera: int): Carrera</TD></TR>
+<TR><TD ALIGN="LEFT" >+ modificarCarrera(nuevosDatos: Map&lt;String, Object&gt;, idCarrera: int): Carrera</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+CarreraServiceImpl781973439[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)CarreraServiceImpl</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   carreraDao: CarreraDao [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   materiaService: MateriaService [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ agregarMateria(idCarrera: int, idMateria: int): Carrera</TD></TR>
+<TR><TD ALIGN="LEFT" >+ crearCarrera(carreraDto: CarreraDto): Carrera</TD></TR>
+<TR><TD ALIGN="LEFT" >+ eliminarCarrera(idCarrera: int): Carrera</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getCarreraById(idCarrera: int): Carrera</TD></TR>
+<TR><TD ALIGN="LEFT" >+ modificarCarrera(nuevosDatos: Map&lt;String, Object&gt;, idCarrera: int): Carrera</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Materia395227868[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Materia</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   anio: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   carrera: Carrera [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   codigo: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   correlatividades: List&lt;Materia&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   cuatrimestre: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   id: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   nombre: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   profesor: Profesor [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ agregarCorrelatividad(m: Materia)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+MateriaServiceImpl781973439[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)MateriaServiceImpl</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   carreraService: CarreraService [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dao: MateriaDao [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   profesorService: ProfesorService [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ asignarCarrera(c: Carrera, m: Materia): Materia</TD></TR>
+<TR><TD ALIGN="LEFT" >+ borrarMateria(idMateria: Integer): Materia</TD></TR>
+<TR><TD ALIGN="LEFT" >+ crearMateria(materia: MateriaDto): Materia</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getMateriaById(idMateria: int): Materia</TD></TR>
+<TR><TD ALIGN="LEFT" >+ modificarMateria(nuevosDatos: Map&lt;String, Object&gt;, idMateria: int): Materia</TD></TR>
+<TR><TD ALIGN="LEFT" >+ ordenarMaterias(ordenamiento: String): List&lt;Materia&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Profesor395227868[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Profesor</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   apellido: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   id: long [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   materiasDictadas: List&lt;Materia&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   nombre: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   titulo: String [0..1]</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+Carrera395227868 -> Materia395227868[label="materiasList
+[0..*]"];
+CarreraControllerTest1429308361 -> Carrera395227868[label="agregarMateria_Success() -> agregarMateria()"];
+CarreraControllerTest1429308361 -> CarreraController1429308361[label="carreraController
+[0..1]"];
+CarreraControllerTest1429308361 -> CarreraServiceImpl781973439[arrowhead=none];
+CarreraDaoMemoryImpl1349341572 -> Carrera395227868[label="repositorioCarrera
+[0..*]"];
+CarreraDaoMemoryImpl1349341572 -> MateriaServiceImpl781973439[arrowhead=none];
+CarreraServiceImpl781973439 -> CarreraDaoMemoryImpl1349341572[arrowhead=none];
+Materia395227868 -> Carrera395227868[label="carrera
+[0..1]"];
+Materia395227868 -> Profesor395227868[label="profesor
+[0..1]"];
+    
+}
+@enduml
